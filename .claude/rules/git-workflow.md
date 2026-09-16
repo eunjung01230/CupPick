@@ -1,30 +1,28 @@
 # Git Workflow
 
+CupPick은 1인 개발 프로젝트다. 팀 리뷰·승인 절차는 두지 않되, 실수를 되돌릴 수 있게 하는 안전장치는 유지한다.
+
 ## Branch
 
-`main`은 항상 배포 가능한 branch다. 이슈 PR을 직접 받지 않고 `develop` → `main` 승격 PR과 hotfix만 받는다.
-
-`develop`은 integration branch다. 이슈 branch의 기준점이자 PR target이며, 직접 개발하지 않는다.
-
-적용 시점: 이 규칙(#65)이 `main`에 반영된 이후 새로 시작하는 Issue 작업부터 적용한다. 그 전에 만들어져 진행 중인 branch/PR에는 소급 적용하지 않는다.
+`main`은 유일한 기준 branch이며 항상 배포 가능한 상태를 유지한다.
 
 작업 branch:
 
 ```text
-feat/<issue>-<slug>
-fix/<issue>-<slug>
-hotfix/<issue>-<slug>
-refactor/<issue>-<slug>
-test/<issue>-<slug>
-docs/<issue>-<slug>
-chore/<issue>-<slug>
+feat/<slug>
+fix/<slug>
+refactor/<slug>
+test/<slug>
+docs/<slug>
+chore/<slug>
 ```
 
 - slug는 짧은 kebab-case 영문을 사용한다.
-- 하나의 branch는 하나의 Issue를 기본으로 한다.
-- 새 branch는 최신 `develop`에서 만든다. `hotfix/*`만 `main`에서 만든다.
-- 팀원의 branch를 임의로 force-push하지 않는다.
-- 이슈 번호를 붙이는 규칙은 2026-09-11부터 적용한다. 그 전에 만든 branch(`docs/06-data-wbc`, `design-ysb` 등)는 예외로 두고 이름을 바꾸지 않는다.
+- Issue를 만들어 작업하는 경우 `feat/12-benefit-card`처럼 이슈 번호를 앞에 붙인다. Issue 없이 작업해도 된다.
+- 하나의 branch는 하나의 작업 단위를 다룬다.
+- 새 branch는 최신 `main`에서 만든다.
+- 작업이 끝난 branch는 `main`에 반영한 뒤 정리한다. branch 삭제는 사용자 요청이 있을 때만 실행한다.
+- 소규모 문서·설정 변경은 사용자가 명시적으로 요청한 경우 `main`에 직접 커밋할 수 있다. 그 외에는 작업 branch를 사용한다.
 
 ## Commit
 
@@ -45,20 +43,45 @@ chore:
 
 제목은 "무엇을 했는가"가 드러나도록 작성한다.
 
-## PR
+하나의 commit은 하나의 목적만 담는다. 관련 없는 변경을 함께 커밋하지 않는다.
 
-- base branch: `develop` (hotfix · `develop` → `main` 승격 PR만 `main`). GitHub 기본 base가 `main`이므로 PR 생성 시 확인한다
+## Pull Request
+
+PR은 선택 사항이다. 변경이 크거나 나중에 근거를 다시 찾을 것 같으면 자기 리뷰용으로 PR을 만든다.
+
+- base branch: `main`
 - PR 제목: Conventional Commits
 - body: `.github/PULL_REQUEST_TEMPLATE.md` 준수
-- Issue 연결: 이슈 PR은 `Refs #<number>` (develop 대상 PR에서는 closing keyword가 이슈를 자동으로 닫지 않는다). 이슈는 승격 PR에서 `Closes #<number>`로 닫는다
-- 변경이 크면 PR을 나눈다.
-- merge: 이슈 PR · hotfix는 Squash merge, `develop` → `main` 승격과 `main` → `develop` 동기화는 merge commit
+- Issue 연결: `Closes #<number>`
+- 절차는 `.claude/skills/prepare-pr/SKILL.md`를 따른다.
 
 ## 절대 하지 않을 것
 
-- `main` · `develop` 직접 개발/직접 push
-- force push to `main` · `develop`
-- 승격 · 동기화 PR을 squash merge
-- unrelated changes 포함
+- force push
+- `git reset --hard`로 커밋하지 않은 변경 삭제
+- destructive `git clean`
+- 원격에 이미 push된 커밋 이력 변조
 - merge conflict를 추측으로 해결
-- 사용자의 명시적 요청 없는 merge/deploy
+- unrelated changes를 한 커밋에 섞기
+
+## 사용자 승인이 필요한 작업
+
+아래는 사용자가 명시적으로 요청하기 전에 실행하지 않는다.
+
+- `git push`
+- PR 생성 또는 수정
+- merge
+- branch 삭제
+- `git reset --hard` · `git clean`
+- 임의 stash
+- DB migration 실행
+- production 배포
+- 외부 서비스 설정 변경
+
+Git 작업 전에는 다음을 확인한다.
+
+```bash
+git status
+git branch --show-current
+git remote -v
+```

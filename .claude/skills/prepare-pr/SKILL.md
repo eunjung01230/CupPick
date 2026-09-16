@@ -9,8 +9,8 @@ disable-model-invocation: true
 PR을 만들기 전에:
 
 1. `git status`
-2. base가 `develop`인지 확인 (hotfix · 승격 PR만 `main`). GitHub 기본 base가 `main`이라, 이슈 PR이 실수로 `main`을 잡지 않았는지 본다
-3. `git diff origin/develop...HEAD` 기준 전체 변경 검토 (base가 `main`인 PR은 `origin/main...HEAD`)
+2. base는 `main`이다
+3. `git diff origin/main...HEAD` 기준 전체 변경 검토
 4. unrelated change 제거
 5. debug log / mock / TODO / secret 확인
 6. 프로젝트의 가능한 lint/test/typecheck/build 수행
@@ -24,7 +24,7 @@ PR 제목:
 
 PR body에는 반드시 포함:
 - 변경 목적
-- 이슈 PR은 `Refs #<issue>` / 승격 PR은 포함 이슈 전부 `Closes #<issue>`
+- Issue를 연결했다면 `Closes #<issue>`
 - 주요 변경
 - 실제 수행한 검증
 - UI 변경 자료(해당 시)
