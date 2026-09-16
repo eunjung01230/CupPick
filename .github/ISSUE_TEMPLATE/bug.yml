@@ -1,0 +1,53 @@
+name: Bug
+description: 재현 가능한 잘못된 동작
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 현상
+      description: 실제로 어떤 문제가 발생하는지 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 절차
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대 동작
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 동작
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: 환경
+      placeholder: "예: Chrome 150 / Android / production"
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 로그 / 스크린샷
+      description: secret 또는 개인정보는 제거해주세요.
+    validations:
+      required: false
