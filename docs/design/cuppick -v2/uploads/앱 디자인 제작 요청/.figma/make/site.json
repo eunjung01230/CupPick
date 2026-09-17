@@ -1,0 +1,10 @@
+{
+  "description": "Transforms user-submitted app plans into tailored, professional designs, streamlining the app development process for creators and developers.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

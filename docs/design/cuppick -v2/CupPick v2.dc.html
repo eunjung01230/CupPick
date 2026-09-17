@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html,body{margin:0;background:#EAE6E0}
+body{font-family:Outfit,"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;color:#1C1410;-webkit-font-smoothing:antialiased}
+a{color:#C8773A}a:hover{color:#A85F28}
+*{-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{width:0;height:0}
+@keyframes cpPulse{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes cpSpin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="min-height:100vh;box-sizing:border-box;padding:8px 24px 32px;display:flex;flex-direction:column;align-items:center;gap:10px">
+
+  <div style="width:100%;max-width:980px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 20px;justify-content:space-between">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:'DM Serif Display',serif;font-size:26px;letter-spacing:-0.3px">CupPick</div>
+      <div style="font-size:12.5px;line-height:1.55;color:#7A6B61;max-width:560px">피그마 파일의 토큰(#FAF8F5 / #3D2B1F / #C8773A, DM Serif Display + Outfit)과 화면 구조(스플래시 → 로그인 → 권한 → 4탭 앱, 브랜드 상세 시트, 등록 방식 시트)를 적용했습니다. 상태 구분은 01~06 문서 기준을 유지합니다.</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div style="display:flex;background:#FFFFFF;border:1px solid #E2DDD8;border-radius:10px;padding:3px;gap:3px">
+        <button type="button" onClick="{{ setIOS }}" style="{{ iosTabStyle }}">iOS</button>
+        <button type="button" onClick="{{ setAndroid }}" style="{{ androidTabStyle }}">Android</button>
+      </div>
+      <button type="button" onClick="{{ toggleAnnotate }}" style="{{ annoBtnStyle }}">근거 주석</button>
+      <button type="button" onClick="{{ reset }}" style="white-space:nowrap;flex:none;height:34px;padding:0 12px;border:1px solid #E2DDD8;background:#FFFFFF;border-radius:9px;font:inherit;font-size:12.5px;color:#7A6B61;cursor:pointer">처음부터</button>
+    </div>
+  </div>
+
+  <div style="width:100%;max-width:980px;display:flex;flex-wrap:wrap;gap:6px">
+    <sc-for list="{{ jumps }}" as="j" hint-placeholder-count="13">
+      <button type="button" onClick="{{ j.go }}" style="{{ j.style }}">{{ j.label }}</button>
+    </sc-for>
+  </div>
+
+  <x-import component-from-global-scope="{{ frameGlobal }}" from="./ios-frame.jsx ./android-frame.jsx" hint-size="402px,874px">
+    <div style="height:100%;display:flex;flex-direction:column;background:#FAF8F5;position:relative;overflow:hidden">
+
+      <sc-if value="{{ sSplash }}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{ skipSplash }}" style="position:absolute;inset:0;border:0;padding:0;background:#3A2416;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;z-index:10">
+          <div style="position:absolute;left:8%;top:18%;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:19px;transform:rotate(-12deg)">📍</div>
+          <div style="position:absolute;right:8%;top:13%;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:19px;transform:rotate(8deg)">☕</div>
+          <div style="position:absolute;left:6%;bottom:22%;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:19px;transform:rotate(-8deg)">🫘</div>
+          <div style="position:absolute;right:7%;bottom:18%;width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:22px;color:#F5E6C8;transform:rotate(10deg)">C</div>
+          <div style="width:150px;height:150px;border-radius:44px;background:linear-gradient(145deg,#F7ECD6,#E8CFA8);display:flex;align-items:center;justify-content:center;box-shadow:0 0 42px rgba(255,220,160,.35)">
+            <span style="font-family:'DM Serif Display',serif;font-size:82px;color:#3A2416;line-height:1;padding-bottom:8px">C</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div style="font-family:'DM Serif Display',serif;font-size:52px;color:#F5E6C8;letter-spacing:-0.5px;line-height:1">CupPick</div>
+            <div style="font-size:15px;line-height:1.55;color:rgba(245,230,200,.62);text-align:center">내 스탬프·쿠폰을 한곳에 모으고,<br>오늘 쓸 수 있는 가까운 카페를 찾아보세요</div>
+          </div>
+          <div style="position:absolute;bottom:56px;display:flex;gap:7px">
+            <span style="width:6px;height:6px;border-radius:50%;background:#F5E6C8;animation:cpPulse 1.3s 0s infinite"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:#F5E6C8;animation:cpPulse 1.3s .22s infinite"></span>
+            <span style="width:6px;height:6px;border-radius:50%;background:#F5E6C8;animation:cpPulse 1.3s .44s infinite"></span>
+          </div>
+        </button>
+      </sc-if>
+
+      <sc-if value="{{ sLogin }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#3A2416;z-index:10">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:64px 32px 20px">
+            <div style="width:116px;height:116px;border-radius:34px;background:linear-gradient(145deg,#F7ECD6,#E8CFA8);display:flex;align-items:center;justify-content:center">
+              <span style="font-family:'DM Serif Display',serif;font-size:64px;color:#3A2416;line-height:1;padding-bottom:6px">C</span>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'DM Serif Display',serif;font-size:42px;color:#F5E6C8;letter-spacing:-0.4px;line-height:1.1">CupPick</div>
+              <div style="font-size:14.5px;line-height:1.55;color:rgba(245,230,200,.58);margin-top:10px">내 스탬프·쿠폰을 한곳에 모으고,<br>오늘 쓸 수 있는 가까운 카페를 찾아보세요</div>
+            </div>
+          </div>
+          <div style="flex:none;background:#FAF8F5;border-radius:26px 26px 0 0;padding:22px 22px 34px;display:flex;flex-direction:column;gap:10px">
+            <div style="text-align:center;font-size:11.5px;font-weight:700;color:#7A6B61;letter-spacing:1.2px">시작하기</div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-top:4px">
+              <sc-for list="{{ socialButtons }}" as="b" hint-placeholder-count="3">
+                <button type="button" onClick="{{ b.run }}" style="{{ b.style }}">{{ b.label }}</button>
+              </sc-for>
+            </div>
+            <button type="button" onClick="{{ startGuest }}" style="font:inherit;font-size:15.5px;font-weight:700;color:#7A6B61;background:transparent;border:0;border-radius:16px;padding:13px;cursor:pointer;min-height:46px">로그인 없이 둘러보기</button>
+            <div style="text-align:center;font-size:11px;color:#7A6B61;line-height:1.55">계속 진행하면 <span style="text-decoration:underline">이용약관</span> 및 <span style="text-decoration:underline">개인정보 처리방침</span>에 동의한 것으로 간주됩니다.</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ sPerm }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#FAF8F5;z-index:10">
+          <div style="flex:none;display:flex;justify-content:center;gap:6px;padding:62px 0 8px">
+            <sc-for list="{{ permDots }}" as="d" hint-placeholder-count="2">
+              <span style="{{ d.style }}"></span>
+            </sc-for>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:0 30px">
+            <div style="width:108px;height:108px;border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:44px;background:{{ perm.tint }};border:2px solid {{ perm.ring }}">{{ perm.icon }}</div>
+            <div style="text-align:center">
+              <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#1C1410;letter-spacing:-0.2px">{{ perm.title }}</div>
+              <div style="font-size:15px;color:#7A6B61;line-height:1.6;margin-top:10px">{{ perm.desc }}</div>
+            </div>
+          </div>
+          <div style="flex:none;padding:0 24px 40px;display:flex;flex-direction:column;gap:9px">
+            <button type="button" onClick="{{ permAllow }}" style="font:inherit;font-size:17px;font-weight:800;letter-spacing:-0.2px;color:#fff;border:0;border-radius:14px;padding:16px;cursor:pointer;min-height:50px;background:{{ perm.cta }}">{{ perm.allow }}</button>
+            <button type="button" onClick="{{ permSkip }}" style="font:inherit;font-size:15.5px;font-weight:700;color:#7A6B61;background:transparent;border:0;border-radius:14px;padding:13px;cursor:pointer;min-height:46px">{{ perm.skip }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ sApp }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%;display:flex;flex-direction:column">
+
+          <div style="flex:none;padding:54px 18px 11px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #E2DDD8;background:#FAF8F5;box-sizing:border-box">
+            <div style="display:flex;align-items:center;gap:9px;min-width:0">
+              <div style="width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,#3D2B1F,#5B4A3E);display:flex;align-items:center;justify-content:center;flex:none">
+                <span style="font-family:'DM Serif Display',serif;font-size:18px;color:#F5E6C8;line-height:1;padding-bottom:2px">C</span>
+              </div>
+              <span style="font-family:'DM Serif Display',serif;font-size:19px;letter-spacing:-0.2px">CupPick</span>
+            </div>
+            <sc-if value="{{ isGuest }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ askLogin }}" style="white-space:nowrap;flex:none;font:inherit;font-size:12px;font-weight:700;color:#C8773A;background:#F0EDE8;border:1px solid rgba(200,119,58,.25);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:36px">로그인</button>
+            </sc-if>
+          </div>
+
+          <div style="flex:1;overflow:auto;-webkit-overflow-scrolling:touch;position:relative">
+
+            <sc-if value="{{ vMap }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column">
+                <sc-if value="{{ isGuest }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:10px 16px;background:linear-gradient(90deg,#3D2B1F,#5A3A25);display:flex;align-items:center;gap:8px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#FBBF24;flex:none"></span>
+                    <span style="flex:1;font-size:11.5px;font-weight:500;color:rgba(245,230,200,.88);line-height:1.4">게스트 모드 · 내 혜택은 로그인 후</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ offline }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:9px 16px;background:#2C2C2C;display:flex;align-items:center;justify-content:center;gap:8px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#FBBF24;flex:none"></span>
+                    <span style="font-size:11.5px;color:rgba(255,255,255,.9)">오프라인 · 마지막 업데이트 08:47</span>
+                  </div>
+                </sc-if>
+
+                <div style="padding:11px 16px 10px;background:#FAF8F5;border-bottom:1px solid #E2DDD8;display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;padding:9px 11px 9px 13px;border-radius:14px;background:#FFFFFF;border:1px solid #E2DDD8">
+                      <span style="flex:none;font-size:13px;color:#7A6B61">⌕</span>
+                      <input type="text" value="{{ locQuery }}" onChange="{{ onLocQuery }}" onKeyDown="{{ onLocKey }}" placeholder="주소·지역명으로 위치 변경" style="flex:1;min-width:0;font:inherit;font-size:13px;color:#1C1410;background:transparent;border:0;outline:none;padding:0" />
+                      <button type="button" onClick="{{ runLocSearch }}" style="flex:none;white-space:nowrap;font:inherit;font-size:11.5px;font-weight:700;color:#fff;border:0;border-radius:999px;padding:7px 11px;cursor:pointer;min-height:32px;background:linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%)">이 위치로</button>
+                    </div>
+                    <button type="button" onClick="{{ useGps }}" aria-label="현재 위치로 이동" style="{{ gpsStyle }}">◎</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+                    <span style="flex:none;font-size:11px;font-weight:600;color:#7A6B61">자주 가는 곳</span>
+                    <sc-for list="{{ presets }}" as="p" hint-placeholder-count="2">
+                      <button type="button" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="position:relative;height:390px;overflow:hidden;background:linear-gradient(170deg,#eae6e0,#dbd5cc 55%,#cec8be)">
+                  <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(168,159,151,.4) 0 .6px,transparent .6px 36px),repeating-linear-gradient(90deg,rgba(168,159,151,.4) 0 .6px,transparent .6px 36px)"></div>
+                  <div style="position:absolute;left:47%;top:50%;width:15px;height:15px;border-radius:50%;background:#3B82F6;border:2px solid #fff;box-shadow:0 0 0 7px rgba(59,130,246,.18)"></div>
+                  <sc-for list="{{ mapPins }}" as="p" hint-placeholder-count="4">
+                    <button type="button" onClick="{{ p.go }}" style="{{ p.wrapStyle }}">
+                      <span style="{{ p.badgeStyle }}">{{ p.short }}</span>
+                      <sc-if value="{{ p.showLabel }}" hint-placeholder-val="{{ true }}">
+                        <span style="{{ p.labelStyle }}">도보 {{ p.min }}분</span>
+                      </sc-if>
+                    </button>
+                  </sc-for>
+                  <div style="position:absolute;left:12px;right:60px;bottom:12px;display:flex;flex-wrap:wrap;gap:6px">
+                    <span style="white-space:nowrap;background:rgba(255,255,255,.92);padding:6px 11px;border-radius:999px;font-size:11.5px;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08)">📍 {{ locLabel }}</span>
+                  </div>
+                  <div style="position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:6px">
+                    <button type="button" onClick="{{ zoomIn }}" aria-label="확대" style="width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.96);border:1px solid rgba(0,0,0,.08);font:inherit;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.1)">+</button>
+                    <button type="button" onClick="{{ zoomOut }}" aria-label="축소" style="width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.96);border:1px solid rgba(0,0,0,.08);font:inherit;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.1)">−</button>
+                  </div>
+                  <div style="position:absolute;right:12px;top:12px;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                    <div style="display:flex;gap:6px">
+                      <button type="button" onClick="{{ set15 }}" style="{{ r15Style }}">도보 15분</button>
+                      <button type="button" onClick="{{ set30 }}" style="{{ r30Style }}">도보 30분</button>
+                    </div>
+                    <div style="display:flex;gap:6px">
+                      <button type="button" onClick="{{ setPinNear }}" style="{{ pinNearStyle }}">브랜드별 1곳</button>
+                      <button type="button" onClick="{{ setPinAll }}" style="{{ pinAllStyle }}">모든 지점</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:7px;padding:11px 16px;border-bottom:1px solid #E2DDD8;background:#FAF8F5">
+                  <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button>
+                  </sc-for>
+                  <span style="margin-left:auto;white-space:nowrap;font-size:11.5px;color:#7A6B61">{{ brandCount }}개 브랜드 · {{ cafeCount }}곳</span>
+                </div>
+
+                <div style="padding:12px 16px 20px;display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ cafeGroups }}" as="g" hint-placeholder-count="4">
+                    <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:11px">
+                      <div style="display:flex;align-items:center;gap:11px">
+                        <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex:none;background:{{ g.color }}">{{ g.short }}</div>
+                        <div style="flex:1;min-width:0">
+                          <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ g.name }}</div>
+                          <div style="font-size:11.5px;color:#7A6B61;margin-top:3px">{{ g.near }}</div>
+                        </div>
+                      </div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid #E2DDD8">
+                        <sc-if value="{{ g.gated }}" hint-placeholder-val="{{ false }}">
+                          <span style="font-size:11.5px;color:#7A6B61">🔒 혜택 정보는 로그인 후 확인</span>
+                        </sc-if>
+                        <sc-if value="{{ g.open }}" hint-placeholder-val="{{ true }}">
+                          <span style="white-space:nowrap;font-size:11.5px;font-weight:600;color:#3D2B1F;background:#F0EDE8;padding:5px 10px;border-radius:999px">{{ g.stampText }}</span>
+                        </sc-if>
+                        <div style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:{{ g.sumBg }}">
+                          <span style="width:6px;height:6px;border-radius:50%;background:{{ g.sumColor }};flex:none"></span>
+                          <span style="white-space:nowrap;font-size:11px;font-weight:700;color:{{ g.sumColor }}">{{ g.sumLabel }}</span>
+                        </div>
+                      </div>
+                      <button type="button" onClick="{{ g.toggle }}" style="width:100%;box-sizing:border-box;font:inherit;font-size:12px;font-weight:700;color:#3D2B1F;background:#F0EDE8;border:0;border-radius:12px;padding:10px;cursor:pointer;min-height:40px">{{ g.toggleLabel }}</button>
+                      <sc-if value="{{ g.isOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <sc-for list="{{ g.stores }}" as="st" hint-placeholder-count="3">
+                            <div style="background:#FAF8F5;border:1px solid #E2DDD8;border-radius:13px;padding:12px;display:flex;flex-direction:column;gap:8px">
+                              <div style="display:flex;align-items:center;gap:10px">
+                                <div style="flex:1;min-width:0">
+                                  <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ st.name }}</div>
+                                  <div style="font-size:11.5px;color:{{ st.walkColor }};margin-top:3px">{{ st.walk }}</div>
+                                </div>
+                                <sc-if value="{{ st.showVerdict }}" hint-placeholder-val="{{ false }}">
+                                  <div style="display:flex;align-items:center;gap:5px;padding:5px 9px;border-radius:999px;background:{{ st.vBg }}">
+                                    <span style="width:6px;height:6px;border-radius:50%;background:{{ st.vColor }};flex:none"></span>
+                                    <span style="white-space:nowrap;font-size:10.5px;font-weight:700;color:{{ st.vColor }}">{{ st.verdict }}</span>
+                                  </div>
+                                </sc-if>
+                                <button type="button" onClick="{{ st.directions }}" style="white-space:nowrap;flex:none;font:inherit;font-size:11.5px;font-weight:700;color:#C8773A;background:rgba(200,119,58,.08);border:1px solid rgba(200,119,58,.35);border-radius:11px;padding:8px 11px;cursor:pointer;min-height:36px">길찾기</button>
+                              </div>
+                              <sc-if value="{{ st.hasBasis }}" hint-placeholder-val="{{ false }}">
+                                <div style="font-size:11px;color:#7A6B61;line-height:1.55">{{ st.basis }}</div>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ isGuest }}" hint-placeholder-val="{{ false }}">
+                    <button type="button" onClick="{{ askLogin }}" style="font:inherit;font-size:13px;font-weight:700;color:#C8773A;background:transparent;border:2px dashed rgba(200,119,58,.4);border-radius:16px;padding:14px;cursor:pointer;min-height:50px">＋ 혜택 등록하기 (로그인 필요)</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vBenefits }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column">
+                <div style="padding:11px 16px;border-bottom:1px solid #E2DDD8;display:flex;align-items:center;justify-content:space-between;gap:10px">
+                  <div style="font-size:15px;font-weight:700">내 혜택</div>
+                  <div style="display:flex;background:#F0EDE8;border-radius:999px;padding:3px;gap:3px">
+                    <button type="button" onClick="{{ sortExpiry }}" style="{{ sortExpiryStyle }}">만료 임박</button>
+                    <button type="button" onClick="{{ sortPref }}" style="{{ sortPrefStyle }}">선호 브랜드</button>
+                  </div>
+                </div>
+
+                <sc-if value="{{ hasPending }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" onClick="{{ goPending }}" style="margin:8px 16px 0;text-align:left;font:inherit;background:#FFFBEB;border:1px solid rgba(180,83,9,.28);border-radius:14px;padding:13px;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#B45309;flex:none"></span>
+                    <span style="flex:1;font-size:13px;font-weight:700;color:#92400E">확인이 필요한 항목 {{ pendingCount }}건</span>
+                    <span style="font-size:15px;color:#B45309">›</span>
+                  </button>
+                </sc-if>
+
+                <div style="padding:12px 16px 148px;display:flex;flex-direction:column;gap:12px">
+                  <sc-for list="{{ cards }}" as="c" hint-placeholder-count="5">
+                    <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px">
+                      <button type="button" onClick="{{ c.go }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;background:transparent;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:11px;min-height:44px">
+                        <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex:none;background:{{ c.color }}">{{ c.short }}</div>
+                        <div style="flex:1;min-width:0">
+                          <div style="font-size:14px;font-weight:700">{{ c.name }}</div>
+                          <div style="font-size:12.5px;font-weight:600;color:{{ c.stateColor }};margin-top:3px">{{ c.state }}</div>
+                        </div>
+                        <span style="font-size:15px;color:#B9AC9E">›</span>
+                      </button>
+                      <sc-if value="{{ c.hasProgress }}" hint-placeholder-val="{{ true }}">
+                        <div>
+                          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">
+                            <span style="font-size:11.5px;font-weight:500;color:#7A6B61">스탬프</span>
+                            <span style="font-size:12.5px;font-weight:700">{{ c.progressText }}</span>
+                          </div>
+                          <div style="display:flex;flex-wrap:wrap;gap:6px">
+                            <sc-for list="{{ c.dots }}" as="d" hint-placeholder-count="10">
+                              <span style="{{ d.style }}"></span>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ c.hasSub }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:11.5px;color:#7A6B61">{{ c.subText }}</div>
+                      </sc-if>
+                      <sc-if value="{{ c.hasActs }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;gap:7px;flex-wrap:wrap">
+                          <sc-for list="{{ c.acts }}" as="a" hint-placeholder-count="2">
+                            <button type="button" onClick="{{ a.run }}" style="{{ a.style }}">{{ a.label }}</button>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ c.hasCoupons }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px;padding-top:11px;border-top:1px solid #E2DDD8">
+                          <sc-for list="{{ c.coupons }}" as="k" hint-placeholder-count="1">
+                            <button type="button" onClick="{{ c.go }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;background:#FAF8F5;border:1px solid #E2DDD8;border-radius:13px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:48px">
+                              <div style="flex:1;min-width:0">
+                                <div style="font-size:13px;font-weight:600">{{ k.name }}</div>
+                                <div style="font-size:12px;font-weight:700;color:{{ k.timingColor }};margin-top:3px">{{ k.timing }}</div>
+                              </div>
+                              <sc-if value="{{ k.hasStore }}" hint-placeholder-val="{{ false }}">
+                                <span style="white-space:nowrap;flex:none;font-size:11px;font-weight:700;color:#3D2B1F;background:#F0EDE8;padding:6px 10px;border-radius:999px">{{ k.storeText }}</span>
+                              </sc-if>
+                            </button>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ noCards }}" hint-placeholder-val="{{ false }}">
+                    <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:16px;padding:26px 18px;display:flex;flex-direction:column;align-items:center;gap:12px">
+                      <div style="font-size:13.5px;font-weight:600">아직 등록한 스탬프가 없어요.</div>
+                      <button type="button" onClick="{{ openRegister }}" style="font:inherit;font-size:13px;font-weight:700;color:#fff;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;min-height:44px;background:linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%)">스탬프 등록하기</button>
+                    </div>
+                  </sc-if>
+                </div>
+
+                <button type="button" onClick="{{ openRegister }}" style="position:sticky;bottom:16px;align-self:center;margin-top:-66px;z-index:5;white-space:nowrap;font:inherit;font-size:13.5px;font-weight:700;color:#fff;border:0;border-radius:999px;padding:14px 22px;cursor:pointer;min-height:50px;background:linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%);box-shadow:0 8px 24px rgba(200,119,58,.38)">＋ 스탬프/쿠폰 등록</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vAlerts }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column">
+                <div style="padding:11px 16px;border-bottom:1px solid #E2DDD8;display:flex;align-items:baseline;gap:9px">
+                  <div style="font-size:15px;font-weight:700">알림</div>
+                </div>
+                <div style="padding:12px 16px 6px;font-size:11.5px;font-weight:700;color:#7A6B61">만료 예정</div>
+                <div style="padding:0 16px;display:flex;flex-direction:column;gap:9px">
+                  <sc-for list="{{ alerts }}" as="n" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ n.go }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;background:{{ n.bg }};border:1px solid {{ n.border }};border-radius:14px;padding:13px;display:flex;align-items:center;gap:11px;cursor:pointer;min-height:58px">
+                      <div style="flex:none;width:46px;text-align:center;font-size:13.5px;font-weight:700;color:{{ n.color }}">{{ n.dday }}</div>
+                      <div style="flex:1;min-width:0">
+                        <div style="font-size:13px;font-weight:600;line-height:1.45">{{ n.text }}</div>
+                        <div style="font-size:11px;color:#7A6B61;margin-top:3px">{{ n.meta }}</div>
+                      </div>
+                      <span style="font-size:15px;color:#B9AC9E">›</span>
+                    </button>
+                  </sc-for>
+                </div>
+                <div style="padding:16px 16px 6px;font-size:11.5px;font-weight:700;color:#7A6B61">정리된 항목</div>
+                <div style="margin:0 16px;background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:6px">
+                  <div style="font-size:13px;font-weight:600">빽다방 스탬프 1개 만료</div>
+                  <div style="font-size:11.5px;color:#7A6B61;line-height:1.55">만료되어 지난 내역으로 옮겼어요</div>
+                </div>
+                <div style="height:24px"></div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vProfile }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;padding-bottom:24px">
+                <div style="padding:16px;display:flex;align-items:center;gap:13px;border-bottom:1px solid #E2DDD8">
+                  <div style="width:56px;height:56px;border-radius:18px;background:#F0EDE8;border:2px solid #E2DDD8;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none">☕</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:15px;font-weight:700">커피조아</div>
+                    <div style="font-size:11.5px;color:#7A6B61;margin-top:3px">{{ providerLabel }} 계정</div>
+                  </div>
+                  <span style="white-space:nowrap;flex:none;font-size:11px;font-weight:700;color:#047857;background:#ECFDF5;padding:5px 9px;border-radius:999px">연결됨</span>
+                </div>
+
+                <sc-for list="{{ settingGroups }}" as="g" hint-placeholder-count="3">
+                  <div>
+                    <div style="padding:18px 16px 6px;font-size:11px;font-weight:700;color:#7A6B61;letter-spacing:.8px">{{ g.label }}</div>
+                    <div style="margin:0 16px;border:1px solid #E2DDD8;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;gap:1px;background:#E2DDD8">
+                      <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                        <button type="button" onClick="{{ r.run }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;background:#FFFFFF;border:0;padding:14px 15px;display:flex;align-items:center;gap:11px;cursor:pointer;min-height:52px">
+                          <div style="flex:1;min-width:0">
+                            <div style="font-size:13.5px;font-weight:500">{{ r.label }}</div>
+                            <sc-if value="{{ r.hasDesc }}" hint-placeholder-val="{{ false }}">
+                              <div style="font-size:11.5px;color:#7A6B61;margin-top:3px;line-height:1.45">{{ r.desc }}</div>
+                            </sc-if>
+                          </div>
+                          <span style="{{ r.trailStyle }}">{{ r.trail }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ vSub }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;background:#FAF8F5;display:flex;flex-direction:column;z-index:20">
+                <div style="flex:none;padding:12px 14px;border-bottom:1px solid #E2DDD8;display:flex;align-items:center;gap:10px">
+                  <button type="button" onClick="{{ closeSub }}" aria-label="뒤로" style="width:34px;height:34px;border-radius:999px;border:0;background:#F0EDE8;font:inherit;font-size:16px;cursor:pointer;flex:none">‹</button>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ subTitle }}</div>
+                    <div style="font-size:11px;color:#7A6B61;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ subSub }}</div>
+                  </div>
+                </div>
+                <div style="flex:1;overflow:auto">
+
+                  <sc-if value="{{ subCapture }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:18px 16px 24px;display:flex;flex-direction:column;gap:16px">
+                      <div style="font-size:13px;color:#7A6B61;line-height:1.6">스탬프·쿠폰이 보이는 공식 앱 화면을 캡처해서 올려주세요.</div>
+                      <button type="button" onClick="{{ doCapture }}" style="{{ captureBoxStyle }}">
+                        <span style="font-size:30px">{{ captureIcon }}</span>
+                        <span style="font-size:13.5px;font-weight:700;color:#1C1410">{{ captureTitle }}</span>
+                        <span style="font-size:11.5px;color:#7A6B61;line-height:1.5;text-align:center">{{ captureNote }}</span>
+                      </button>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subDirect }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:16px 16px 24px;display:flex;flex-direction:column;gap:16px">
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:12.5px;font-weight:700;color:#7A6B61">브랜드</div>
+                        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px">
+                          <sc-for list="{{ brandOptions }}" as="b" hint-placeholder-count="6">
+                            <button type="button" onClick="{{ b.pick }}" style="{{ b.style }}">{{ b.short }}</button>
+                          </sc-for>
+                        </div>
+                      </div>
+                      <sc-if value="{{ isMammoth }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <div style="font-size:12.5px;font-weight:700;color:#7A6B61">매머드 유형</div>
+                          <div style="display:flex;gap:7px">
+                            <sc-for list="{{ variantOptions }}" as="v" hint-placeholder-count="2">
+                              <button type="button" onClick="{{ v.pick }}" style="{{ v.style }}">{{ v.label }}</button>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:12.5px;font-weight:700;color:#7A6B61">종류</div>
+                        <div style="display:flex;gap:7px">
+                          <button type="button" onClick="{{ pickStamp }}" style="{{ kindStampStyle }}">스탬프</button>
+                          <button type="button" onClick="{{ pickCoupon }}" style="{{ kindCouponStyle }}">쿠폰</button>
+                        </div>
+                      </div>
+
+                      <sc-if value="{{ isStampKind }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <div style="font-size:12.5px;font-weight:700;color:#7A6B61">현재 잔액</div>
+                          <div style="display:flex;align-items:center;gap:10px;background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:10px 12px">
+                            <button type="button" onClick="{{ qtyDown }}" aria-label="감소" style="width:46px;height:46px;border-radius:12px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:20px;cursor:pointer">−</button>
+                            <div style="flex:1;text-align:center;font-size:26px;font-weight:700">{{ newQty }}</div>
+                            <button type="button" onClick="{{ qtyUp }}" aria-label="증가" style="width:46px;height:46px;border-radius:12px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:20px;cursor:pointer">+</button>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ isCouponKind }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <div style="font-size:12.5px;font-weight:700;color:#7A6B61">쿠폰 이름 또는 혜택</div>
+                          <div style="display:flex;flex-wrap:wrap;gap:6px">
+                            <sc-for list="{{ nameOptions }}" as="n" hint-placeholder-count="3">
+                              <button type="button" onClick="{{ n.pick }}" style="{{ n.style }}">{{ n.label }}</button>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ needsStore }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <div style="font-size:12.5px;font-weight:700;color:#7A6B61">매장별 적립</div>
+                          <div style="display:flex;flex-direction:column;gap:1px;background:#E2DDD8;border-radius:13px;overflow:hidden">
+                            <sc-for list="{{ storeRowsInput }}" as="o" hint-placeholder-count="3">
+                              <div style="background:#FFFFFF;padding:9px 11px;display:flex;align-items:center;gap:9px">
+                                <div style="flex:1;min-width:0;font-size:12.5px;font-weight:600">{{ o.label }}</div>
+                                <button type="button" onClick="{{ o.dec }}" aria-label="감소" style="width:38px;height:38px;border-radius:10px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:17px;cursor:pointer">−</button>
+                                <div style="width:26px;text-align:center;font-size:14px;font-weight:700">{{ o.n }}</div>
+                                <button type="button" onClick="{{ o.inc }}" aria-label="증가" style="width:38px;height:38px;border-radius:10px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:17px;cursor:pointer">+</button>
+                              </div>
+                            </sc-for>
+                          </div>
+                          <div style="font-size:11.5px;font-weight:600;color:{{ storeSumColor }}">{{ storeSumText }}</div>
+                        </div>
+                      </sc-if>
+                      <button type="button" onClick="{{ toggleNdMore }}" style="{{ ndMoreStyle }}">{{ ndMoreLabel }}</button>
+                      <sc-if value="{{ ndMore }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:16px">
+                      <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="font-size:12.5px;font-weight:700;color:#7A6B61">만료일</div>
+                        <div style="display:flex;flex-direction:column;gap:7px">
+                          <sc-for list="{{ trustOptions }}" as="t" hint-placeholder-count="4">
+                            <button type="button" onClick="{{ t.pick }}" style="{{ t.style }}">
+                              <span style="display:flex;align-items:center;gap:7px">
+                                <span style="width:7px;height:7px;border-radius:50%;background:{{ t.color }};flex:none"></span>
+                                <span style="font-size:13px;font-weight:700">{{ t.label }}</span>
+                              </span>
+                              <span style="font-size:11.5px;color:#7A6B61;line-height:1.5">{{ t.note }}</span>
+                            </button>
+                          </sc-for>
+                        </div>
+                      </div>
+
+                      <sc-if value="{{ isCouponKind }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                          <div style="font-size:12.5px;font-weight:700;color:#7A6B61">사용 가능 매장</div>
+                          <div style="display:flex;flex-direction:column;gap:7px">
+                            <sc-for list="{{ scopeOptions }}" as="s" hint-placeholder-count="3">
+                              <button type="button" onClick="{{ s.pick }}" style="{{ s.style }}">
+                                <span style="font-size:13px;font-weight:700">{{ s.label }}</span>
+                                <span style="font-size:11.5px;color:#7A6B61;line-height:1.5">{{ s.note }}</span>
+                              </button>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ dupSuspect }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#FFFBEB;border:1px solid rgba(180,83,9,.28);border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:6px">
+                          <div style="font-size:12.5px;font-weight:700;color:#92400E">중복이 의심됩니다</div>
+                          <div style="font-size:12px;color:#1C1410;line-height:1.6">{{ dupText }}</div>
+                        </div>
+                      </sc-if>
+                      </div>
+                      </sc-if>
+
+                      <button type="button" onClick="{{ saveDirect }}" style="{{ saveDirectStyle }}">등록하기</button>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subUpdate }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:16px 16px 24px;display:flex;flex-direction:column;gap:13px">
+                      <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;align-items:baseline;gap:10px">
+                        <div style="flex:1;min-width:0;font-size:13px;font-weight:700">{{ updTarget }}</div>
+                        <div style="font-size:20px;font-weight:700">{{ updQty }}</div>
+                      </div>
+                      <div style="display:flex;flex-direction:column;gap:7px">
+                        <sc-for list="{{ updModes }}" as="m" hint-placeholder-count="4">
+                          <button type="button" onClick="{{ m.pick }}" style="{{ m.style }}">
+                            <span style="font-size:13.5px;font-weight:700">{{ m.label }}</span>
+                            <span style="font-size:11.5px;color:#7A6B61;line-height:1.55">{{ m.note }}</span>
+                          </button>
+                        </sc-for>
+                      </div>
+                      <sc-if value="{{ updNeedsNumber }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:9px">
+                          <div style="font-size:12.5px;font-weight:700">{{ updNumberLabel }}</div>
+                          <div style="display:flex;align-items:center;gap:10px">
+                            <button type="button" onClick="{{ updDown }}" aria-label="감소" style="width:46px;height:46px;border-radius:12px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:20px;cursor:pointer">−</button>
+                            <div style="flex:1;text-align:center;font-size:26px;font-weight:700">{{ updInput }}</div>
+                            <button type="button" onClick="{{ updUp }}" aria-label="증가" style="width:46px;height:46px;border-radius:12px;border:1px solid #E2DDD8;background:#F0EDE8;font:inherit;font-size:20px;cursor:pointer">+</button>
+                          </div>
+                          <div style="font-size:11.5px;color:#7A6B61;line-height:1.55">{{ updHint }}</div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ updHasPreview }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:rgba(200,119,58,.07);border:1px solid rgba(200,119,58,.28);border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:6px">
+                          <div style="font-size:12px;font-weight:700;color:#A85F28">저장하면 이렇게 반영됩니다</div>
+                          <div style="font-size:12.5px;color:#1C1410;line-height:1.6">{{ updPreview }}</div>
+                        </div>
+                      </sc-if>
+                      <button type="button" onClick="{{ applyUpdate }}" style="{{ updBtnStyle }}">저장</button>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subConvert }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:16px 16px 24px;display:flex;flex-direction:column;gap:13px">
+                      <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:5px">
+                        <div style="font-size:13px;font-weight:700">{{ convTarget }}</div>
+                        <div style="font-size:11.5px;color:#7A6B61;line-height:1.55">공식 앱에서 발급받은 쿠폰을 기록해 두세요.</div>
+                      </div>
+                      <div style="font-size:12.5px;font-weight:700">공식 앱에서 쿠폰이 발급됐나요</div>
+                      <div style="display:flex;flex-direction:column;gap:7px">
+                        <sc-for list="{{ convOptions }}" as="o" hint-placeholder-count="3">
+                          <button type="button" onClick="{{ o.pick }}" style="{{ o.style }}">
+                            <span style="font-size:13px;font-weight:700">{{ o.label }}</span>
+                            <span style="font-size:11.5px;color:#7A6B61;line-height:1.5">{{ o.note }}</span>
+                          </button>
+                        </sc-for>
+                      </div>
+                      <sc-if value="{{ convIssued }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;flex-direction:column;gap:9px">
+                          <div style="font-size:12.5px;font-weight:700">차감할 묶음</div>
+                          <div style="display:flex;flex-direction:column;gap:1px;background:#E2DDD8;border-radius:11px;overflow:hidden">
+                            <sc-for list="{{ convBundles }}" as="b" hint-placeholder-count="2">
+                              <div style="background:#FAF8F5;padding:11px 12px;display:flex;align-items:center;gap:10px">
+                                <div style="flex:none;min-width:44px;font-size:13px;font-weight:700">{{ b.qty }}</div>
+                                <div style="flex:1;min-width:0;font-size:12px;color:#1C1410">{{ b.dateLabel }}</div>
+                                <div style="flex:none;white-space:nowrap;font-size:10.5px;font-weight:700;color:{{ b.color }}">{{ b.trust }}</div>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ convUnknown }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#FFFBEB;border:1px solid rgba(180,83,9,.28);border-radius:14px;padding:13px;font-size:12px;color:#1C1410;line-height:1.6">확인 필요 항목으로 남겨둡니다.</div>
+                      </sc-if>
+                      <button type="button" onClick="{{ applyConvert }}" style="{{ convBtnStyle }}">{{ convBtnLabel }}</button>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subBenefitMap }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column">
+                      <div style="padding:13px 16px;background:linear-gradient(135deg,#3D2B1F 0%,#5B4A3E 100%);display:flex;flex-direction:column;gap:5px">
+                        <div style="font-size:10.5px;font-weight:700;color:rgba(245,230,200,.7);letter-spacing:.8px">{{ ctxKindLabel }}</div>
+                        <div style="font-size:14.5px;font-weight:700;color:#F5E6C8">{{ ctxTitle }}</div>
+                        <div style="font-size:11.5px;color:rgba(245,230,200,.66);line-height:1.5">{{ ctxMeta }}</div>
+                      </div>
+                      <div style="position:relative;height:180px;background:linear-gradient(170deg,#eae6e0,#dbd5cc 55%,#cec8be);border-bottom:1px solid #E2DDD8;overflow:hidden">
+                        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(168,159,151,.4) 0 .6px,transparent .6px 34px),repeating-linear-gradient(90deg,rgba(168,159,151,.4) 0 .6px,transparent .6px 34px)"></div>
+                        <div style="position:absolute;left:47%;top:50%;width:13px;height:13px;border-radius:50%;background:#3B82F6;border:2px solid #fff;box-shadow:0 0 0 6px rgba(59,130,246,.18)"></div>
+                        <sc-for list="{{ ctxPins }}" as="p" hint-placeholder-count="4">
+                          <div style="{{ p.style }}">{{ p.mark }}</div>
+                        </sc-for>
+                      </div>
+                      <div style="padding:11px 16px 4px;display:flex;flex-wrap:wrap;gap:8px 14px">
+                        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="3">
+                          <div style="display:flex;align-items:center;gap:6px">
+                            <span style="width:7px;height:7px;border-radius:50%;background:{{ l.color }};flex:none"></span>
+                            <span style="white-space:nowrap;font-size:11px;color:#1C1410">{{ l.label }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="padding:10px 16px 20px;display:flex;flex-direction:column;gap:9px">
+                        <sc-for list="{{ ctxStores }}" as="s" hint-placeholder-count="4">
+                          <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;align-items:center;gap:11px">
+                            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                              <div style="font-size:13.5px;font-weight:600">{{ s.name }}</div>
+                              <div style="font-size:11.5px;color:{{ s.walkColor }}">{{ s.walk }}</div>
+                              <div style="font-size:11px;color:#7A6B61;line-height:1.5">{{ s.basis }}</div>
+                            </div>
+                            <div style="flex:none;display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:{{ s.bg }}">
+                              <span style="width:6px;height:6px;border-radius:50%;background:{{ s.color }};flex:none"></span>
+                              <span style="white-space:nowrap;font-size:11px;font-weight:700;color:{{ s.color }}">{{ s.verdict }}</span>
+                            </div>
+                          </div>
+                        </sc-for>
+                        <div style="font-size:11.5px;color:#7A6B61;line-height:1.6">{{ ctxFooter }}</div>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subPending }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:16px 16px 24px;display:flex;flex-direction:column;gap:12px">
+                      <sc-for list="{{ pendingCards }}" as="p" hint-placeholder-count="3">
+                        <div style="background:#FFFFFF;border:1px solid rgba(180,83,9,.28);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span style="width:7px;height:7px;border-radius:50%;background:#B45309;flex:none"></span>
+                            <div style="flex:1;font-size:13.5px;font-weight:700">{{ p.title }}</div>
+                          </div>
+                          <div style="font-size:12px;color:#1C1410;line-height:1.6">{{ p.body }}</div>
+                          <div style="padding:10px 11px;border-radius:11px;background:#FFFBEB;font-size:11.5px;color:#92400E;line-height:1.55">{{ p.effect }}</div>
+                          <div style="display:flex;gap:7px;flex-wrap:wrap">
+                            <sc-for list="{{ p.actions }}" as="a" hint-placeholder-count="2">
+                              <button type="button" onClick="{{ a.run }}" style="{{ a.style }}">{{ a.label }}</button>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-for>
+                      <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:18px;font-size:12.5px;color:#7A6B61;line-height:1.6">현재 보류 중인 항목이 없습니다.</div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ subSearch }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+                      <div style="display:flex;align-items:center;gap:9px;padding:12px 14px;border-radius:14px;background:#F0EDE8">
+                        <span style="font-size:14px;color:#7A6B61">⌕</span>
+                        <span style="flex:1;font-size:13px;color:#7A6B61">매장 이름으로 검색</span>
+                      </div>
+                      <sc-for list="{{ searchRows }}" as="r" hint-placeholder-count="5">
+                        <button type="button" onClick="{{ r.go }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;background:#FFFFFF;border:1px solid #E2DDD8;border-radius:14px;padding:13px;display:flex;align-items:center;gap:11px;cursor:pointer;min-height:56px">
+                          <div style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;flex:none;background:{{ r.color }}">{{ r.short }}</div>
+                          <div style="flex:1;min-width:0">
+                            <div style="font-size:13.5px;font-weight:600">{{ r.name }}</div>
+                            <div style="font-size:11.5px;color:#7A6B61;margin-top:2px">{{ r.store }}</div>
+                          </div>
+                          <span style="white-space:nowrap;flex:none;font-size:11px;font-weight:600;color:#3D2B1F;background:#F0EDE8;padding:5px 9px;border-radius:999px">{{ r.stampText }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ annotate }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin:0 16px 20px;padding:11px 13px;border:1px dashed rgba(200,119,58,.45);border-radius:12px;font:11px/1.6 ui-monospace,Menlo,monospace;color:#A85F28;background:rgba(200,119,58,.06)">{{ subAnno }}</div>
+                  </sc-if>
+
+                </div>
+              </div>
+            </sc-if>
+
+          </div>
+
+          <div style="flex:none;display:flex;border-top:1px solid #E2DDD8;background:#FAF8F5;padding:0 4px 24px">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+              <button type="button" onClick="{{ t.go }}" style="{{ t.style }}">
+                <span style="position:relative;font-size:17px;line-height:1">{{ t.mark }}<sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-4px;right:-8px;min-width:16px;height:16px;border-radius:999px;background:#DC2626;color:#fff;font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px">{{ t.badgeCount }}</span></sc-if></span>
+                <span style="font-size:10.5px;font-weight:700">{{ t.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasSheet }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;background:rgba(10,6,4,.6);display:flex;align-items:flex-end;z-index:60">
+          <div style="width:100%;max-height:88%;overflow:auto;background:#FFFFFF;border-radius:24px 24px 0 0;padding:14px 20px 32px;display:flex;flex-direction:column;gap:11px;box-shadow:0 -10px 34px rgba(28,20,16,.22)">
+            <div style="width:40px;height:5px;border-radius:999px;background:#E2DDD8;align-self:center;flex:none"></div>
+            <div style="font-size:16.5px;font-weight:700;letter-spacing:-0.2px;line-height:1.4">{{ sheetTitle }}</div>
+            <div style="font-size:12.5px;color:#7A6B61;line-height:1.6">{{ sheetBody }}</div>
+
+            <sc-if value="{{ sheetIsBrand }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-if value="{{ detail.hasProgress }}" hint-placeholder-val="{{ true }}">
+                  <div style="background:#FAF8F5;border:1px solid #E2DDD8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                      <span style="font-size:13.5px;font-weight:700">{{ detail.title }}</span>
+                      <span style="font-size:15px;font-weight:700">{{ detail.progressText }}</span>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px">
+                      <sc-for list="{{ detail.dots }}" as="d" hint-placeholder-count="10">
+                        <span style="{{ d.style }}"></span>
+                      </sc-for>
+                    </div>
+                    <div style="font-size:12.5px;font-weight:600;color:#C8773A">{{ detail.state }}</div>
+                    <div style="display:flex;gap:7px;flex-wrap:wrap">
+                      <button type="button" onClick="{{ detail.update }}" style="flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:700;color:#fff;border:0;border-radius:11px;padding:12px;cursor:pointer;min-height:44px;background:linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%)">기록 갱신</button>
+                      <button type="button" onClick="{{ detail.map }}" style="flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:700;color:#C8773A;background:#FFFFFF;border:1px solid rgba(200,119,58,.35);border-radius:11px;padding:12px;cursor:pointer;min-height:44px">주변 적립 매장</button>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ detail.hasCoupons }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:9px">
+                    <div style="font-size:11.5px;font-weight:700;color:#7A6B61">쿠폰</div>
+                    <sc-for list="{{ detail.coupons }}" as="k" hint-placeholder-count="1">
+                      <div style="background:#FAF8F5;border:1px solid #E2DDD8;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:9px">
+                        <div style="font-size:14px;font-weight:700">{{ k.name }}</div>
+                        <div style="font-size:13px;font-weight:700;color:{{ k.timingColor }}">{{ k.timing }}</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:#7A6B61">
+                          <span>{{ k.expiry }}</span>
+                          <span>{{ k.issuedLabel }}</span>
+                        </div>
+                        <sc-if value="{{ k.hasStores }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex;flex-direction:column;gap:6px">
+                            <div style="font-size:11.5px;font-weight:700;color:#7A6B61">사용 가능 매장 {{ k.storeCount }}곳</div>
+                            <div style="display:flex;flex-direction:column;gap:1px;background:#E2DDD8;border-radius:11px;overflow:hidden">
+                              <sc-for list="{{ k.stores }}" as="t" hint-placeholder-count="3">
+                                <div style="background:#FFFFFF;padding:11px 12px;display:flex;align-items:center;gap:10px">
+                                  <div style="flex:1;min-width:0;font-size:12.5px;font-weight:600">{{ t.name }}</div>
+                                  <div style="flex:none;white-space:nowrap;font-size:11px;color:#7A6B61">{{ t.note }}</div>
+                                  <div style="flex:none;white-space:nowrap;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;color:{{ t.statusColor }};background:{{ t.statusBg }}">{{ t.status }}</div>
+                                </div>
+                              </sc-for>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <div style="display:flex;gap:7px;flex-wrap:wrap">
+                          <button type="button" onClick="{{ k.map }}" style="flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:700;color:#C8773A;background:#FFFFFF;border:1px solid rgba(200,119,58,.35);border-radius:11px;padding:12px;cursor:pointer;min-height:44px">주변 사용 매장</button>
+                          <button type="button" onClick="{{ k.use }}" style="flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:700;color:#fff;border:0;border-radius:11px;padding:12px;cursor:pointer;min-height:44px;background:#3D2B1F">{{ k.useLabel }}</button>
+                        </div>
+                        <sc-if value="{{ k.confirming }}" hint-placeholder-val="{{ false }}">
+                          <div style="background:#FFFFFF;border:1px solid #E2DDD8;border-radius:13px;padding:13px;display:flex;flex-direction:column;gap:10px">
+                            <div style="font-size:12.5px;font-weight:600">이 쿠폰을 사용 완료 처리할까요?</div>
+                            <div style="display:flex;gap:7px">
+                              <button type="button" onClick="{{ k.cancelUse }}" style="flex:1;font:inherit;font-size:12.5px;font-weight:600;color:#3D2B1F;background:#F0EDE8;border:0;border-radius:11px;padding:11px;cursor:pointer;min-height:44px">취소</button>
+                              <button type="button" onClick="{{ k.doUse }}" style="flex:1;font:inherit;font-size:12.5px;font-weight:700;color:#fff;border:0;border-radius:11px;padding:11px;cursor:pointer;min-height:44px;background:#3D2B1F">사용 완료</button>
+                            </div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ detail.hasHistory }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:7px">
+                    <div style="font-size:11.5px;font-weight:700;color:#7A6B61">최근 적립 내역</div>
+                    <div style="display:flex;flex-direction:column;gap:1px;background:#E2DDD8;border-radius:12px;overflow:hidden">
+                      <sc-for list="{{ detail.history }}" as="h" hint-placeholder-count="4">
+                        <div style="background:#FFFFFF;padding:11px 12px;display:flex;align-items:center;gap:10px">
+                          <div style="flex:none;width:46px;font-size:12.5px;font-weight:700">{{ h.date }}</div>
+                          <div style="flex:1;min-width:0;font-size:12.5px;color:#1C1410">{{ h.store }}</div>
+                          <div style="flex:none;font-size:12.5px;font-weight:700;color:#C8773A">{{ h.n }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <button type="button" onClick="{{ toggleNotices }}" style="width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:12.5px;font-weight:700;color:#7A6B61;background:#F0EDE8;border:0;border-radius:12px;padding:13px;cursor:pointer;min-height:46px">{{ detail.noticesLabel }}</button>
+                <sc-if value="{{ noticesOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:7px;padding:2px 2px 0">
+                    <sc-for list="{{ detail.notices }}" as="n" hint-placeholder-count="3">
+                      <div style="display:flex;gap:8px;font-size:11.5px;color:#7A6B61;line-height:1.55">
+                        <span style="flex:none;color:#B9AC9E">·</span>
+                        <span style="flex:1">{{ n.text }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ sheetHasActions }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ sheetActions }}" as="a" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ a.run }}" style="{{ a.style }}">
+                    <span style="font-size:13.5px;font-weight:700">{{ a.label }}</span>
+                    <sc-if value="{{ a.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:11.5px;font-weight:400;color:#7A6B61;line-height:1.5">{{ a.note }}</span>
+                    </sc-if>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <button type="button" onClick="{{ closeSheet }}" style="font:inherit;font-size:13px;font-weight:600;color:#7A6B61;background:transparent;border:1.5px solid #E2DDD8;border-radius:14px;padding:12px;cursor:pointer;min-height:46px">{{ sheetDismiss }}</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:16px;right:16px;bottom:100px;z-index:70;background:#1C1410;color:#FAF8F5;border-radius:14px;padding:13px 15px;font-size:12.5px;line-height:1.55;box-shadow:0 10px 28px rgba(28,20,16,.3)">{{ toast }}</div>
+      </sc-if>
+
+    </div>
+  </x-import>
+
+  <div style="width:100%;max-width:980px;font-size:11.5px;line-height:1.7;color:#7A6B61">
+    피그마 파일에서 가져온 것: 컬러·타이포 토큰, 스플래시/로그인/권한 온보딩, 4탭 구조와 알림 배지, 브랜드 상세 바텀시트, 스탬프 점 표시와 브랜드 컬러, 등록 방식 시트(캡처·직접), 길찾기 버튼, 게스트 모드 배너, 첨부 용량 바. 문서 기준으로 유지한 것: 확인·예상·미확인·기간 제한 없음 구분, 적립 범위와 사용 범위 분리, 보류·충돌 해소 흐름.
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:1180},&quot;platform&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ios&quot;,&quot;android&quot;],&quot;default&quot;:&quot;ios&quot;,&quot;tsType&quot;:&quot;'ios' | 'android'&quot;,&quot;section&quot;:&quot;프로토타입&quot;},&quot;annotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;프로토타입&quot;}}">
+const FG = '#1C1410', SUB = '#7A6B61', ACC = '#C8773A', PRI = '#3D2B1F', LINE = '#E2DDD8', SEC = '#F0EDE8';
+const GRAD = 'linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%)';
+const TRUST = {
+  confirmed: { label: '확인됨', color: '#047857', bg: '#ECFDF5' },
+  estimated: { label: '예상', color: '#B45309', bg: '#FFFBEB' },
+  unknown: { label: '미확인', color: SUB, bg: SEC },
+  none: { label: '기간 제한 없음', color: '#4F46E5', bg: '#EEF2FF' },
+};
+const V = {
+  ok: { color: '#047857', bg: '#ECFDF5' },
+  unk: { color: '#B45309', bg: '#FFFBEB' },
+  no: { color: '#B91C1C', bg: '#FEF2F2' },
+};
+// 개발 참고: 모든 날짜/시간 상태(오늘 사용 가능·N일 남음·만료 등)는 실제 현재 시각 기준으로 계산한다.
+const _n = new Date();
+const TODAY = new Date(_n.getFullYear(), _n.getMonth(), _n.getDate());
+function dd(iso) { if (!iso) return null; const p = iso.split('-'); return Math.round((new Date(+p[0], +p[1] - 1, +p[2]) - TODAY) / 86400000); }
+function rel(days) { const d = new Date(TODAY.getTime() + days * 86400000); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function relmd(days) { const d = new Date(TODAY.getTime() + days * 86400000); return String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0'); }
+function md(iso) { const p = iso.split('-'); return +p[1] + '/' + +p[2]; }
+
+const META = {
+  compose: { name: '컴포즈커피', short: '컴', color: '#F5A623', goal: 10, type: 'cumulative', store: '덕양구청점' },
+  mega: { name: '메가MGC커피', short: '메', color: '#1B4D3E', goal: 10, type: 'cumulative', store: '화정역점' },
+  paik: { name: '빽다방', short: '빽', color: '#D0021B', goal: 10, type: 'cumulative', delay: 1, store: '화정역점' },
+  venti: { name: '더벤티', short: '벤', color: '#2C2C2C', goal: 10, type: 'cumulative', store: '화정역점' },
+  mammoth: { name: '매머드', short: '매', color: '#5B4A3E', goal: 10, type: 'variant', store: '화정로데오점',
+    variants: { express: { name: '매머드익스프레스', goal: 10, type: 'cumulative' }, coffee: { name: '매머드커피', goal: 20, type: 'tier', tiers: [12, 20], perStore: true } } },
+  uzi: { name: '우지커피', short: '우', color: '#6B4CE6', goal: 10, type: 'store', minStore: 3, store: '행신역점' },
+  tenpercent: { name: '텐퍼센트커피', short: '텐', color: '#0E7C66', goal: 10, type: 'store', minStore: 3, store: '원당역점' },
+};
+const ORDER = ['compose', 'mega', 'paik', 'venti', 'mammoth', 'uzi', 'tenpercent'];
+const PREF = ['paik', 'mega', 'compose', 'venti'];
+
+const seed = () => ({
+  balances: [
+    { id: 'b1', brand: 'compose', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '공통 적립', qty: 5, official: 5, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 5, date: rel(196), trust: 'confirmed' }], storeStamps: null,
+      history: [[relmd(-1), '덕양구청점'], [relmd(-5), '화정역점'], [relmd(-9), '덕양구청점'], [relmd(-13), '덕양구청점'], [relmd(-18), '화정역점']] },
+    { id: 'b2', brand: 'mega', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '공통 적립', qty: 8, official: 8, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 8, date: rel(138), trust: 'confirmed' }], storeStamps: null,
+      history: [[relmd(0), '화정역점'], [relmd(-2), '화정역점'], [relmd(-6), '덕양구청점'], [relmd(-10), '화정역점']] },
+    { id: 'b3', brand: 'paik', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '공통 적립', qty: 7, official: 7, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 7, date: rel(160), trust: 'confirmed' }], storeStamps: null,
+      history: [[relmd(0), '화정역점'], [relmd(-3), '화정역점'], [relmd(-7), '화정로데오점'], [relmd(-11), '화정역점']] },
+    { id: 'b4', brand: 'venti', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '공통 적립', qty: 6, official: 6, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 6, date: rel(138), trust: 'confirmed' }], storeStamps: null,
+      history: [[relmd(-2), '화정역점'], [relmd(-6), '화정중앙점'], [relmd(-12), '화정역점']] },
+    { id: 'b5', brand: 'mammoth', variant: 'express', store: null, program: '매머드익스프레스', purpose: '교환용', scope: '공통 적립', qty: 7, official: 7, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 7, date: rel(288), trust: 'estimated' }], storeStamps: null,
+      history: [[relmd(-3), '화정역점'], [relmd(-8), '화정역점'], [relmd(-14), '화정역점']] },
+    { id: 'b6', brand: 'mammoth', variant: 'coffee', store: '행신역점', program: '매머드커피', purpose: '교환용', scope: '매장 적립', qty: 12, official: 12, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 12, date: rel(288), trust: 'estimated' }], storeStamps: null,
+      history: [[relmd(-1), '행신역점'], [relmd(-4), '행신역점'], [relmd(-9), '행신역점']] },
+    { id: 'b9', brand: 'mammoth', variant: 'coffee', store: '화정로데오점', program: '매머드커피', purpose: '교환용', scope: '매장 적립', qty: 5, official: 5, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 5, date: rel(288), trust: 'estimated' }], storeStamps: null,
+      history: [[relmd(-5), '화정로데오점'], [relmd(-11), '화정로데오점']] },
+    { id: 'b7', brand: 'tenpercent', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '매장 적립', qty: 8, official: 8, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 8, date: rel(166), trust: 'confirmed' }],
+      storeStamps: [['원당역점', 4], ['삼송역점', 3], ['화정역점', 1]],
+      history: [[relmd(0), '원당역점'], [relmd(-2), '삼송역점'], [relmd(-5), '원당역점'], [relmd(-8), '화정역점']] },
+    { id: 'b8', brand: 'uzi', variant: null, store: null, program: '기본 적립', purpose: '교환용', scope: '매장 적립', qty: 7, official: 7, officialAt: '방금', comp: false, conv: 0,
+      bundles: [{ n: 7, date: rel(196), trust: 'estimated' }],
+      storeStamps: [['행신역점', 4], ['화정역점', 2], ['원당역점', 1]],
+      history: [[relmd(-1), '행신역점'], [relmd(-4), '행신역점'], [relmd(-7), '화정역점']] },
+  ],
+  coupons: [
+    { id: 'k1', brand: 'compose', variant: null, name: '아메리카노 리워드', kind: '스탬프 쿠폰', date: rel(18), issued: rel(-12), usableFrom: null, usableMin: 0, trust: 'confirmed', life: 'held', scope: 'common', stores: null },
+    { id: 'k2', brand: 'mega', variant: null, name: '2,000원 리워드', kind: '스탬프 쿠폰', date: rel(23), issued: rel(0), usableFrom: null, usableMin: 5, trust: 'confirmed', life: 'held', scope: 'common', stores: null },
+    { id: 'k3', brand: 'paik', variant: null, name: '아메리카노 무료 쿠폰', kind: '스탬프 쿠폰', date: rel(28), issued: rel(0), usableFrom: rel(1), usableMin: 0, trust: 'confirmed', life: 'held', scope: 'common', stores: null },
+    { id: 'k4', brand: 'tenpercent', variant: null, name: '2,000원 쿠폰', kind: '스탬프 쿠폰', date: rel(12), issued: rel(-14), usableFrom: null, usableMin: 0, trust: 'confirmed', life: 'held', scope: 'store',
+      stores: [['원당역점', 4], ['삼송역점', 3], ['화정역점', 2]] },
+    { id: 'k5', brand: 'uzi', variant: null, name: '아메리카노 무료 쿠폰', kind: '스탬프 쿠폰', date: rel(8), issued: rel(-16), usableFrom: null, usableMin: 0, trust: 'confirmed', life: 'held', scope: 'store',
+      stores: [['행신역점', 4], ['화정역점', 2], ['원당역점', 1]] },
+  ],
+});
+
+const CAFES = [
+  { id: 'p1', brand: 'paik', name: '빽다방 화정역점', x: '22%', y: '58%', mins: { hwajeong: 3, haengsin: 15, wondang: 17, samsong: 21 } },
+  { id: 'p2', brand: 'paik', name: '빽다방 화정로데오점', x: '22%', y: '34%', mins: { hwajeong: 7, haengsin: 18, wondang: 16, samsong: 23 } },
+  { id: 'p3', brand: 'paik', name: '빽다방 행신역점', x: '88%', y: '34%', mins: { hwajeong: 16, haengsin: 4, wondang: 24, samsong: 26 } },
+  { id: 'm1', brand: 'mega', name: '메가MGC커피 화정역점', x: '30%', y: '46%', mins: { hwajeong: 4, haengsin: 13, wondang: 16, samsong: 19 } },
+  { id: 'm2', brand: 'mega', name: '메가MGC커피 덕양구청점', x: '62%', y: '44%', mins: { hwajeong: 9, haengsin: 17, wondang: 12, samsong: 16 } },
+  { id: 'm3', brand: 'mega', name: '메가MGC커피 원당역점', x: '14%', y: '72%', mins: { hwajeong: 18, haengsin: 22, wondang: 4, samsong: 12 } },
+  { id: 'v1', brand: 'venti', name: '더벤티 화정역점', x: '40%', y: '66%', mins: { hwajeong: 6, haengsin: 16, wondang: 15, samsong: 20 } },
+  { id: 'v2', brand: 'venti', name: '더벤티 화정중앙점', x: '62%', y: '68%', mins: { hwajeong: 10, haengsin: 19, wondang: 14, samsong: 22 } },
+  { id: 'c1s', brand: 'compose', name: '컴포즈커피 덕양구청점', x: '86%', y: '60%', mins: { hwajeong: 8, haengsin: 18, wondang: 11, samsong: 15 } },
+  { id: 'c2s', brand: 'compose', name: '컴포즈커피 화정역점', x: '44%', y: '28%', mins: { hwajeong: 5, haengsin: 14, wondang: 18, samsong: 21 } },
+  { id: 'c3s', brand: 'compose', name: '컴포즈커피 삼송역점', x: '44%', y: '14%', mins: { hwajeong: 24, haengsin: 26, wondang: 13, samsong: 6 } },
+  { id: 'd1', brand: 'mammoth', program: 'coffee', name: '매머드커피 화정로데오점', x: '22%', y: '14%', mins: { hwajeong: 12, haengsin: 20, wondang: 19, samsong: 24 } },
+  { id: 'd2', brand: 'mammoth', program: 'coffee', name: '매머드커피 행신역점', x: '88%', y: '44%', mins: { hwajeong: 17, haengsin: 6, wondang: 25, samsong: 27 } },
+  { id: 'd3', brand: 'mammoth', program: 'express', name: '매머드익스프레스 화정역점', x: '34%', y: '22%', mins: { hwajeong: 5, haengsin: 16, wondang: 18, samsong: 22 } },
+  { id: 'u1', brand: 'uzi', name: '우지커피 행신역점', x: '88%', y: '72%', mins: { hwajeong: 14, haengsin: 4, wondang: 22, samsong: 17 } },
+  { id: 'u2', brand: 'uzi', name: '우지커피 화정역점', x: '52%', y: '52%', mins: { hwajeong: 7, haengsin: 17, wondang: 16, samsong: 22 } },
+  { id: 'u3', brand: 'uzi', name: '우지커피 원당역점', x: '14%', y: '86%', mins: { hwajeong: 19, haengsin: 23, wondang: 6, samsong: 13 } },
+  { id: 't1', brand: 'tenpercent', name: '텐퍼센트커피 원당역점', x: '36%', y: '80%', mins: { hwajeong: 20, haengsin: 24, wondang: 5, samsong: 9 } },
+  { id: 't2', brand: 'tenpercent', name: '텐퍼센트커피 삼송역점', x: '60%', y: '14%', mins: { hwajeong: 25, haengsin: 27, wondang: 14, samsong: 7 } },
+  { id: 't3', brand: 'tenpercent', name: '텐퍼센트커피 화정역점', x: '40%', y: '40%', mins: { hwajeong: 6, haengsin: 15, wondang: 17, samsong: 21 } },
+];
+
+const LOCS = {
+  hwajeong: { key: 'hwajeong', name: '화정역', aka: ['화정', '화정역', '화정동', '덕양구 화정동', '고양시 화정'] },
+  haengsin: { key: 'haengsin', name: '행신역', aka: ['행신', '행신역', '행신동'] },
+  wondang: { key: 'wondang', name: '원당역', aka: ['원당', '원당역', '원당동', '주교동'] },
+  samsong: { key: 'samsong', name: '삼송역', aka: ['삼송', '삼송역', '삼송동', '원흥'] },
+};
+const PRESETS = [{ k: 'home', label: '집', loc: 'haengsin' }, { k: 'work', label: '회사', loc: 'wondang' }, { k: 'samsong', label: '삼송', loc: 'samsong' }];
+
+const PERMS = [
+  { key: 'notification', icon: '🔔', title: '쿠폰 만료 전에 알려드릴까요?', desc: '만료가 가까워지면 알려드려요.', color: '#C8773A', tint: 'rgba(200,119,58,.1)', ring: 'rgba(200,119,58,.28)', items: [], allow: '알림 받기', skip: '나중에' },
+  { key: 'location', icon: '📍', title: '내 주변 카페를 찾아볼까요?', desc: '가까운 카페까지 도보 시간을 보여드려요.', color: '#1B4D3E', tint: 'rgba(27,77,62,.1)', ring: 'rgba(27,77,62,.26)', items: [], allow: '현재 위치 사용', skip: '나중에' },
+];
+
+class Component extends DCLogic {
+  state = Object.assign({
+    platform: null, anno: false,
+    stage: 'splash', logged: false, guest: false, provider: '카카오',
+    tab: 'benefits', sub: null, sheet: null, brand: null, cafe: null, ctx: null,
+    sort: 'expiry', filter: 'all', range: 30, zoom: 1, offline: true, permStep: 0,
+    loc: 'hwajeong', locQuery: '', gps: true, expanded: [], pinMode: 'near',
+    toast: null, detailUnit: null, noticesOpen: false, confirmUse: null,
+    upd: { bal: null, mode: null, input: 0 },
+    conv: { bal: null, issued: null },
+    nd: { brand: '', variant: null, store: '', stores: {}, kind: 'stamp', name: '', qty: 0, trust: 'unknown', scope: 'unknown' },
+    capture: 'idle',
+  }, seed());
+
+  componentDidMount() { this._t = setTimeout(() => { if (this.state.stage === 'splash') this.setState({ stage: 'login' }); }, 2600); }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._toast); clearTimeout(this._cap); }
+
+  set(p) { this.setState(p); }
+  toast(t) { this.setState({ toast: t }); clearTimeout(this._toast); this._toast = setTimeout(() => this.setState({ toast: null }), 3400); }
+
+  pill(active, o) {
+    o = o || {};
+    return 'white-space:nowrap;flex:none;font:inherit;font-size:' + (o.fs || 12) + 'px;font-weight:600;padding:' + (o.pad || '8px 12px') + ';border-radius:999px;cursor:pointer;min-height:' + (o.mh || 36) + 'px;border:1px solid ' + (active ? PRI : LINE) + ';background:' + (active ? PRI : '#FFFFFF') + ';color:' + (active ? '#FAF8F5' : SUB);
+  }
+  opt(active) {
+    return 'font:inherit;text-align:left;display:flex;flex-direction:column;gap:4px;padding:13px;border-radius:13px;cursor:pointer;min-height:48px;border:1.5px solid ' + (active ? ACC : LINE) + ';background:' + (active ? 'rgba(200,119,58,.07)' : '#FFFFFF') + ';color:' + FG;
+  }
+  cta(enabled) {
+    return 'font:inherit;font-size:14px;font-weight:700;color:#fff;border:0;border-radius:16px;padding:15px;cursor:pointer;min-height:50px;background:' + (enabled ? GRAD : '#B3A79E');
+  }
+  small(kind) {
+    if (kind === 'primary') return 'flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:700;color:#fff;border:0;border-radius:11px;padding:12px;cursor:pointer;min-height:44px;background:' + GRAD;
+    return 'flex:1;min-width:104px;white-space:nowrap;font:inherit;font-size:12.5px;font-weight:600;color:' + PRI + ';background:#FFFFFF;border:1px solid ' + LINE + ';border-radius:11px;padding:12px;cursor:pointer;min-height:44px';
+  }
+
+  bMeta(b) { return b && b.variant ? META[b.brand].variants[b.variant] : META[b.brand]; }
+  bLabel(b) { return b.variant ? META[b.brand].variants[b.variant].name : META[b.brand].name; }
+  bGoal(b) { return this.bMeta(b).goal; }
+  bType(b) { return this.bMeta(b).type; }
+  // 매장 조건형 쿠폰의 사용 가능 매장은 기록 시점 스냅샷으로 고정한다(이후 적립과 무관).
+  storeRows(c) {
+    const list = c.stores || [];
+    const need = META[c.brand].minStore || 3;
+    return list.map(r => ({ name: r[0], n: r[1], ok: r[1] >= need, need: need }));
+  }
+  brandStores(brand, variant) {
+    return CAFES.filter(c => c.brand === brand && (!variant || c.program === variant)).map(c => c.name.replace(/^\S+\s/, ''));
+  }
+  timing(c) {
+    if (c.life === 'used') return { text: '사용 완료', color: SUB };
+    if (c.usableMin) return { text: c.usableMin + '분 후 사용 가능', color: '#B45309' };
+    const du = c.usableFrom ? dd(c.usableFrom) : 0;
+    if (du > 1) return { text: du + '일 후 사용 가능', color: '#B45309' };
+    if (du === 1) return { text: '내일부터 사용 가능', color: '#B45309' };
+    const d = c.date ? dd(c.date) : null;
+    if (d === null) return { text: '오늘 사용 가능', color: '#047857' };
+    if (d < 0) return { text: '만료', color: SUB };
+    if (d === 0) return { text: '오늘 만료', color: '#B91C1C' };
+    if (d === 1) return { text: '내일 만료', color: '#B91C1C' };
+    if (d <= 3) return { text: d + '일 남음', color: '#B91C1C' };
+    return { text: d + '일 남음', color: '#047857' };
+  }
+  notices(brand, variant) {
+    const t = variant ? META[brand].variants[variant].type : META[brand].type;
+    const out = [];
+    if (t === 'tier') { out.push('스탬프는 매장별로 따로 쌓입니다.'); out.push('12개는 아메리카노, 20개는 모든 음료 쿠폰으로 교환할 수 있어요.'); out.push('교환 시점은 직접 선택하며 자동으로 전환되지 않아요.'); }
+    else if (t === 'store') out.push('해당 매장에서 스탬프 ' + (META[brand].minStore || 3) + '개 이상 적립 시 쿠폰을 사용할 수 있어요.');
+    else out.push('스탬프 ' + META[brand].goal + '개를 모으면 쿠폰이 발급돼요.');
+    if (brand === 'paik') out.push('쿠폰은 발급 다음 날부터 사용할 수 있습니다.');
+    if (brand === 'mammoth') out.push('일부 특수매장은 적립·사용이 제외될 수 있습니다.');
+    out.push('CupPick은 공식 앱의 상태를 기록하는 앱이며 쿠폰을 직접 발급하지 않아요.');
+    return out;
+  }
+  // 공식 앱에서 발급·교환한 사실을 CupPick에 기록한다. 공식 잔액을 직접 차감하지 않는다.
+  recordCoupon(b, amount, name) {
+    const isStore = META[b.brand].type === 'store';
+    const snapshot = isStore && b.storeStamps ? b.storeStamps.map(r => [r[0], r[1]]) : null;
+    this.setState({
+      balances: this.state.balances.map(x => x.id === b.id ? Object.assign({}, x, { qty: x.qty - amount, official: x.qty - amount, officialAt: '방금', storeStamps: null, bundles: [{ n: x.qty - amount, date: null, trust: 'unknown' }] }) : x),
+      coupons: this.state.coupons.concat([{ id: 'x' + Date.now(), brand: b.brand, variant: b.variant, name: name, kind: '스탬프 쿠폰', date: null, issued: rel(0), usableFrom: null, usableMin: 0, trust: 'unknown', life: 'held', scope: isStore ? 'store' : 'common', stores: snapshot }]),
+    });
+    this.toast('공식 앱에서 받은 쿠폰을 기록했습니다. 만료일은 상세에서 입력할 수 있어요.');
+  }
+
+  soonest(id) {
+    const out = [];
+    this.state.balances.filter(b => b.brand === id).forEach(b => {
+      if (b.comp || b.conv) return;
+      b.bundles.forEach(u => { if (u.date && dd(u.date) >= 0 && (u.trust === 'confirmed' || u.trust === 'estimated')) out.push({ date: u.date, trust: u.trust, n: u.n, what: 'stamp' }); });
+    });
+    this.state.coupons.filter(c => c.brand === id && c.life === 'held').forEach(c => {
+      if (c.date && dd(c.date) >= 0 && (c.trust === 'confirmed' || c.trust === 'estimated')) out.push({ date: c.date, trust: c.trust, n: 1, what: 'coupon' });
+    });
+    out.sort((a, b) => a.date === b.date ? (a.trust === 'confirmed' ? -1 : 1) : (a.date < b.date ? -1 : 1));
+    return out[0] || null;
+  }
+
+  pendingList() {
+    const out = [];
+    this.state.balances.forEach(b => {
+      if (b.comp) out.push({
+        title: META[b.brand].name + ' · 구성 확인 필요',
+        body: '현재 잔액 ' + b.qty + '개는 그대로 유지합니다. 개수는 같지만 내역이 달라 어떤 묶음이 영향받았는지 특정할 수 없어, 이 잔액의 영향 가능한 기존 묶음 전체를 보류했습니다.',
+        effect: '보류 중: 만료 예정 알림·자동 차감. 다른 브랜드·프로그램 잔액은 그대로 둡니다.',
+        actions: [
+          { label: '날짜 미확인으로 정리', style: this.small('primary'), run: () => { this.setState({ balances: this.state.balances.map(x => x.id === b.id ? Object.assign({}, x, { comp: false, bundles: [{ n: x.qty, date: null, trust: 'unknown' }] }) : x) }); this.toast('만료 정보를 버리고 ' + b.qty + '개를 날짜 미확인 수량으로 정리했습니다. 잔액은 변하지 않았습니다.'); } },
+          { label: '나중에 확인', style: this.small(), run: () => this.toast('보류를 유지합니다. 상세 입력을 즉시 요구하지 않습니다.') },
+        ],
+      });
+      if (b.conv) out.push({
+        title: META[b.brand].name + ' · 전환 확인 필요 ' + Math.min(b.conv, b.qty) + '개',
+        body: '쿠폰 발급 여부를 알 수 없어 쿠폰을 만들지 않고 잔액 ' + b.qty + '개도 그대로 유지했습니다. 전환됐을 가능성이 있는 수량만 보류합니다.',
+        effect: '보류 중: 해당 수량의 만료 자동 차감·알림. 잔액과 다른 묶음은 그대로입니다.',
+        actions: [
+          { label: '발급됐어요', style: this.small('primary'), run: () => { this.setState({ balances: this.state.balances.map(x => x.id === b.id ? Object.assign({}, x, { conv: 0, qty: 0, official: 0, officialAt: '방금', bundles: [] }) : x), coupons: this.state.coupons.concat([{ id: 'cv' + Date.now(), brand: b.brand, name: '스탬프 교환 쿠폰', kind: '스탬프 쿠폰', date: null, trust: 'unknown', life: 'held', scope: 'unknown' }]) }); this.toast('쿠폰 기록과 아직 반영되지 않은 차감만 함께 저장했습니다. 재시도해도 한 번만 반영됩니다.'); } },
+          { label: '발급 안 됐어요', style: this.small(), run: () => { this.setState({ balances: this.state.balances.map(x => x.id === b.id ? Object.assign({}, x, { conv: 0 }) : x) }); this.toast('전환 보류를 해제하고 날짜·구성을 다시 평가했습니다. 추가 차감은 없습니다.'); } },
+        ],
+      });
+    });
+    this.state.coupons.filter(c => c.scope === 'conflict' && c.life === 'held').forEach(c => out.push({
+      title: META[c.brand].name + ' ' + c.name + ' · 조건 확인 필요',
+      body: '서비스가 확인한 공통 정책은 이 매장을 사용 제외로 두고, 사용자가 쿠폰 화면에서 확인한 개별 근거는 사용 가능이라고 합니다. 적용 대상·시행 시점을 비교했지만 해소되지 않았습니다.',
+      effect: '해당 쿠폰의 이 매장 조건만 미확인으로 내렸습니다. 날짜·다른 매장 조건·잔액은 그대로입니다.',
+      actions: [{ label: '근거 두 개 비교', style: this.small(), run: () => this.toast('공통 정책 v3(확인일 8/28) · 개인 확인(9/12, 쿠폰 상세 화면). 두 근거를 함께 보여주고 임의로 한쪽을 고르지 않습니다.') }],
+    }));
+    return out;
+  }
+
+  cafeVerdict(cafe) {
+    const s = this.state;
+    if (!s.logged) return { verdict: '', v: 'unk', basis: '' };
+    if (s.filter === 'coupon') {
+      const c = s.coupons.filter(x => x.brand === cafe.brand && x.life === 'held' && (!cafe.program || (x.variant || null) === cafe.program))[0];
+      if (!c) return { verdict: '보유 쿠폰 없음', v: 'unk', basis: '미등록과 확인된 0개는 다릅니다.' };
+      if (c.scope === 'store') {
+        const rows = this.storeRows(c).filter(r => cafe.name.indexOf(r.name) >= 0);
+        if (!rows.length) return { verdict: '적립 0/3 · 사용 불가', v: 'no', basis: '' };
+        return rows[0].ok ? { verdict: '이 매장에서 사용 가능', v: 'ok', basis: '' } : { verdict: '적립 ' + rows[0].n + '/' + rows[0].need + ' · 사용 불가', v: 'no', basis: '' };
+      }
+      if (c.scope === 'common') return { verdict: '이 매장에서 사용 가능', v: 'ok', basis: '' };
+      if (c.scope === 'listed') return cafe.name.indexOf('화정역점') >= 0
+        ? { verdict: '사용 가능', v: 'ok', basis: '근거: 사용자가 쿠폰 화면에서 확인 (9/11) · 일부 목록이라 목록 밖은 미확인' }
+        : { verdict: '확인 필요', v: 'unk', basis: '일부 목록 밖입니다. 불가가 아니라 미확인입니다.' };
+      if (c.scope === 'conflict') return { verdict: '확인 필요', v: 'unk', basis: '공통 정책과 개인 확인 근거가 충돌해 이 조건만 확인 필요로 내렸습니다.' };
+      return { verdict: '확인 필요', v: 'unk', basis: '사용 가능 매장을 등록하지 않아 미확인입니다.' };
+    }
+    if (s.filter === 'stamp') {
+      const b = s.balances.filter(x => x.brand === cafe.brand && (!cafe.program || x.variant === cafe.program) && (!x.store || cafe.name.indexOf(x.store) >= 0))[0]
+        || s.balances.filter(x => x.brand === cafe.brand && (!cafe.program || x.variant === cafe.program))[0];
+      if (!b) return { verdict: '스탬프 미등록', v: 'unk', basis: '미등록은 확인된 0개가 아닙니다.' };
+      if (b.scope === '공통 적립') return { verdict: '적립 가능', v: 'ok', basis: '근거: 서비스가 확인한 공통 적립 정책 (9/01)' };
+      if (b.scope === '매장 적립') return { verdict: '적립 가능', v: 'ok', basis: '' };
+      if (b.scope === '적립 범위 미확인') return { verdict: '확인 필요', v: 'unk', basis: '적립 범위를 모르는 잔액입니다. 브랜드 후보만 보여줍니다.' };
+      return cafe.name.indexOf('화정역점') >= 0
+        ? { verdict: '적립 가능', v: 'ok', basis: '근거: 매장 전용 적립으로 사용자가 확인 (9/08)' }
+        : { verdict: '적립 불가', v: 'no', basis: '근거: 이 잔액은 화정역점 전용으로 확인됨' };
+    }
+    return { verdict: '혜택 보유', v: 'ok', basis: '' };
+  }
+
+  applyLocQuery() {
+    const q = (this.state.locQuery || '').trim();
+    if (!q) { this.toast('주소 또는 지역명을 입력해 주세요.'); return; }
+    const key = Object.keys(LOCS).filter(k => LOCS[k].aka.some(a => a.indexOf(q) >= 0 || q.indexOf(a) >= 0))[0];
+    if (!key) { this.toast('"' + q + '" 위치를 찾지 못했습니다. 조회 위치는 그대로 둡니다.'); return; }
+    this.setState({ loc: key, gps: false, locQuery: '' });
+    this.toast(LOCS[key].name + ' 주변 카페를 보여드려요.');
+  }
+
+  renderVals() {
+    const s = this.state;
+    const platform = s.platform || this.props.platform || 'ios';
+    const anno = s.anno === null ? (this.props.annotate === true) : s.anno;
+    const pending = this.pendingList();
+    const bal = s.upd.bal ? s.balances.filter(b => b.id === s.upd.bal)[0] : null;
+    const convBal = s.conv.bal ? s.balances.filter(b => b.id === s.conv.bal)[0] : null;
+    const brandId = s.brand;
+
+    const L = LOCS[s.loc] || LOCS.hwajeong;
+    const ALL = CAFES.map(c => Object.assign({}, c, { min: c.mins[L.key] })).sort((a, b) => (a.min === null ? 999 : a.min) - (b.min === null ? 999 : b.min));
+
+    const cafes = ALL.filter(c => {
+      if (c.min !== null && s.range === 15 && c.min > 15) return false;
+      if (!s.logged) return true;
+      if (s.filter === 'stamp') return s.balances.some(b => b.brand === c.brand);
+      if (s.filter === 'coupon') return s.coupons.some(x => x.brand === c.brand && x.life === 'held');
+      return true;
+    });
+
+    const groupKeys = [];
+    ORDER.forEach(bid => {
+      const progs = [];
+      cafes.filter(c => c.brand === bid).forEach(c => { const p = c.program || null; if (progs.indexOf(p) < 0) progs.push(p); });
+      progs.forEach(p => groupKeys.push([bid, p]));
+    });
+    const cafeGroups = groupKeys.map(gk => {
+      const bid = gk[0], prog = gk[1];
+      const list = cafes.filter(c => c.brand === bid && (c.program || null) === prog);
+      if (!list.length) return null;
+      const m = prog ? META[bid].variants[prog] : META[bid];
+      const gid = bid + (prog ? ':' + prog : '');
+      const bals = s.balances.filter(x => x.brand === bid && (x.variant || null) === prog);
+      const bal = bals[0];
+      const goal = m.tiers ? m.tiers[m.tiers.length - 1] : m.goal;
+      const stores = list.map(c => {
+        const v = this.cafeVerdict(c);
+        return {
+          name: c.name.replace(m.name + ' ', '').replace(META[bid].name + ' ', ''), full: c.name,
+          walk: c.min === null ? '도보 정보 없음' : '도보 ' + c.min + '분',
+          walkColor: c.min === null ? SUB : FG,
+          verdict: v.verdict, vColor: V[v.v].color, vBg: V[v.v].bg,
+          showVerdict: s.logged && s.filter !== 'all',
+          hasBasis: false, basis: v.basis,
+          directions: () => this.setState({ sheet: 'directions', cafe: c }),
+        };
+      });
+      const graded = s.logged && s.filter !== 'all';
+      const ok = stores.filter(x => x.vColor === V.ok.color).length;
+      const nearest = list[0].min;
+      const isOpen = s.expanded.indexOf(gid) >= 0;
+      const stampSum = bals.reduce((n, x) => n + x.qty, 0);
+      return {
+        id: gid, name: m.name, short: META[bid].short, color: META[bid].color,
+        count: stores.length, nearest: nearest === null ? 999 : nearest,
+        near: nearest === null ? '도보 정보 없음' : '지점 ' + stores.length + '곳 · 도보 ' + nearest + '분',
+        gated: false, open: true,
+        sumLabel: !graded ? '지점 ' + stores.length + '곳' : (ok ? (s.filter === 'stamp' ? '적립 가능 ' : '사용 가능 ') + ok + '곳' : '확인 필요'),
+        sumColor: !graded ? SUB : (ok ? V.ok.color : V.unk.color), sumBg: !graded ? SEC : (ok ? V.ok.bg : V.unk.bg),
+        stampText: !s.logged ? '' : (bals.length > 1 ? bals.map(x => x.store + ' ' + x.qty + '/' + goal).join(' · ') : (bal ? '스탬프 ' + bal.qty + '/' + goal : '스탬프 미등록')),
+        toggleLabel: isOpen ? '접기' : '지점 ' + stores.length + '곳 보기',
+        isOpen: isOpen, stores: stores,
+        toggle: () => this.setState({ expanded: isOpen ? s.expanded.filter(x => x !== gid) : s.expanded.concat([gid]) }),
+      };
+    }).filter(Boolean).sort((a, b) => a.nearest - b.nearest);
+
+    const cardList = [];
+    ORDER.forEach(id => {
+      const bals = s.balances.filter(b => b.brand === id);
+      const cps = s.coupons.filter(c => c.brand === id && c.life === 'held');
+      const units = bals.length ? bals : (cps.length ? [null] : []);
+      units.forEach(b => {
+        const m = b ? this.bMeta(b) : META[id];
+        const type = m.type, qty = b ? b.qty : 0;
+        const tiers = type === 'tier' ? m.tiers : null;
+        const goal = tiers ? tiers[tiers.length - 1] : m.goal;
+        let state = '', stateColor = SUB, sub = '', acts = [];
+        if (tiers) {
+          if (qty >= tiers[1]) { state = '모든 음료 쿠폰으로 교환할 수 있어요'; stateColor = ACC; acts = [{ label: '공식 앱에서 교환했어요', primary: true, amount: tiers[1], name: '모든 음료 쿠폰' }]; }
+          else if (qty >= tiers[0]) { state = '아메리카노 쿠폰으로 교환할 수 있어요'; stateColor = ACC; sub = (tiers[1] - qty) + '개 더 모으면 모든 음료 쿠폰'; acts = [{ label: '공식 앱에서 교환했어요', primary: true, amount: tiers[0], name: '아메리카노 쿠폰' }, { label: '계속 모으기', primary: false }]; }
+          else state = '아메리카노 쿠폰까지 ' + (tiers[0] - qty) + '개 남았어요';
+        } else if (b) {
+          if (qty >= goal) { state = '쿠폰이 발급될 시점이에요'; stateColor = ACC; acts = [{ label: '발급된 쿠폰 기록하기', primary: true, amount: goal, name: META[id].name + ' 쿠폰' }]; }
+          else state = '쿠폰까지 ' + (goal - qty) + '개 남았어요';
+        } else { state = '쿠폰 ' + cps.length + '장 보유'; stateColor = ACC; }
+        const mine = b ? cps.filter(c => (c.variant || null) === (b.variant || null) && (!b.store || true)) : cps;
+        let sortKey = 9999;
+        mine.forEach(c => { if (c.date) sortKey = Math.min(sortKey, dd(c.date)); });
+        cardList.push({
+          key: b ? b.id : id, id: id, name: (b ? this.bLabel(b) : META[id].name) + (b && b.store ? ' · ' + b.store : ''), short: META[id].short, color: META[id].color,
+          hasProgress: !!b, progressText: qty + ' / ' + goal,
+          dots: b ? Array.from({ length: goal }).map((x, i) => ({ style: 'width:13px;height:13px;border-radius:50%;flex:none;' + (i < qty ? 'background:' + ACC : 'background:#EAE6E0;border:1px solid ' + LINE) })) : [],
+          state: state, stateColor: stateColor, hasSub: !!sub, subText: sub,
+          hasActs: acts.length > 0,
+          acts: acts.map(a => ({ label: a.label, style: this.small(a.primary ? 'primary' : ''), run: () => { if (a.amount) this.recordCoupon(b, a.amount, a.name); else this.toast('계속 모읍니다. 교환은 언제든 할 수 있어요.'); } })),
+          hasCoupons: mine.length > 0,
+          coupons: mine.map(c => {
+            const t = this.timing(c);
+            const rows = c.scope === 'store' ? this.storeRows(c) : [];
+            const okCount = rows.filter(r => r.ok).length;
+            return { name: c.name, timing: t.text, timingColor: t.color, hasStore: c.scope === 'store', storeText: '사용 가능 매장 ' + okCount + '곳 ›' };
+          }),
+          sortKey: sortKey,
+          go: () => this.setState({ sheet: 'brand', brand: id, detailUnit: b ? b.id : null, noticesOpen: false }),
+        });
+      });
+    });
+    let cards = cardList;
+    if (s.sort === 'expiry') cards.sort((a, b) => a.sortKey - b.sortKey);
+    else cards.sort((a, b) => {
+      const ia = PREF.indexOf(a.id), ib = PREF.indexOf(b.id);
+      if (ia < 0 && ib < 0) return a.sortKey - b.sortKey;
+      if (ia < 0) return 1; if (ib < 0) return -1; return ia - ib;
+    });
+
+    const alerts = [];
+    s.coupons.filter(c => c.life === 'held').forEach(c => {
+      if (!c.date || (c.trust !== 'confirmed' && c.trust !== 'estimated')) return;
+      const d = dd(c.date); if (d < 0 || d > 3) return;
+      alerts.push({ dday: d === 0 ? '당일' : 'D-' + d, text: META[c.brand].name + ' ' + c.name, meta: md(c.date) + ' 만료', color: d === 0 ? '#B91C1C' : (c.trust === 'estimated' ? '#B45309' : '#047857'), bg: d === 0 ? '#FEF2F2' : '#FFFFFF', border: d === 0 ? 'rgba(185,28,28,.25)' : LINE, go: () => this.setState({ sheet: 'brand', brand: c.brand, detailUnit: null }) });
+    });
+    s.balances.forEach(b => { if (b.comp || b.conv) return; b.bundles.forEach(u => { if (!u.date) return; const d = dd(u.date); if (d < 0 || d > 3) return; alerts.push({ dday: d === 0 ? '당일' : 'D-' + d, text: META[b.brand].name + ' 스탬프 ' + u.n + '개', meta: md(u.date) + ' 만료', color: d === 0 ? '#B91C1C' : '#047857', bg: d === 0 ? '#FEF2F2' : '#FFFFFF', border: d === 0 ? 'rgba(185,28,28,.25)' : LINE, go: () => this.setState({ sheet: 'brand', brand: b.brand, detailUnit: null }) }); }); });
+
+    const dBals = brandId ? s.balances.filter(b => b.brand === brandId && (!s.detailUnit || b.id === s.detailUnit)) : [];
+    const dBal = dBals[0] || null;
+    const dMeta = dBal ? this.bMeta(dBal) : (brandId ? META[brandId] : null);
+    const dTiers = dMeta && dMeta.type === 'tier' ? dMeta.tiers : null;
+    const dGoal = dMeta ? (dTiers ? dTiers[dTiers.length - 1] : dMeta.goal) : 0;
+    const dCoupons = brandId ? s.coupons.filter(c => c.brand === brandId && (!dBal || (c.variant || null) === (dBal.variant || null))) : [];
+    const detail = {
+      hasProgress: !!dBal,
+      title: dBal ? this.bLabel(dBal) + (dBal.store ? ' · ' + dBal.store : '') : (brandId ? META[brandId].name : ''),
+      progressText: dBal ? dBal.qty + ' / ' + dGoal : '',
+      dots: dBal ? Array.from({ length: dGoal }).map((x, i) => ({ style: 'width:13px;height:13px;border-radius:50%;flex:none;' + (i < dBal.qty ? 'background:' + ACC : 'background:#EAE6E0;border:1px solid ' + LINE) })) : [],
+      state: !dBal ? '' : dTiers ? (dBal.qty >= dTiers[1] ? '모든 음료 쿠폰으로 교환할 수 있어요' : dBal.qty >= dTiers[0] ? '아메리카노 쿠폰으로 교환할 수 있어요 · ' + (dTiers[1] - dBal.qty) + '개 더 모으면 모든 음료' : '아메리카노 쿠폰까지 ' + (dTiers[0] - dBal.qty) + '개 남았어요')
+        : (dBal.qty >= dGoal ? '쿠폰이 발급될 시점이에요' : '쿠폰까지 ' + (dGoal - dBal.qty) + '개 남았어요'),
+      hasCoupons: dCoupons.length > 0,
+      coupons: dCoupons.map(c => {
+        const t = this.timing(c);
+        const rows = c.scope === 'store' ? this.storeRows(c) : [];
+        return {
+          name: c.name + (c.life === 'used' ? ' · 사용 완료' : ''), timing: t.text, timingColor: t.color,
+          expiry: c.date ? '만료일 ' + c.date.replace(/-/g, '.') : '만료일 미확인',
+          issuedLabel: c.issued ? '발급일 ' + c.issued.replace(/-/g, '.') : '발급일 미확인',
+          hasStores: rows.length > 0, storeCount: rows.filter(r => r.ok).length,
+          stores: rows.map(r => ({ name: r.name, note: r.ok ? '적립 ' + r.n + '개' : '적립 ' + r.n + '/' + r.need, status: r.ok ? '사용 가능' : '사용 불가', statusColor: r.ok ? V.ok.color : V.no.color, statusBg: r.ok ? V.ok.bg : V.no.bg })),
+          useLabel: c.life === 'used' ? '사용 취소' : '사용 완료',
+          confirming: s.confirmUse === c.id,
+          use: () => { if (c.life === 'used') { this.setState({ coupons: s.coupons.map(x => x.id === c.id ? Object.assign({}, x, { life: 'held' }) : x) }); this.toast('사용 취소했습니다.'); } else this.set({ confirmUse: c.id }); },
+          cancelUse: () => this.set({ confirmUse: null }),
+          doUse: () => { this.setState({ confirmUse: null, coupons: s.coupons.map(x => x.id === c.id ? Object.assign({}, x, { life: 'used' }) : x) }); this.toast('사용 완료로 옮겼습니다.'); },
+          map: () => this.setState({ sheet: null, sub: 'benefitMap', ctx: { kind: 'coupon', id: c.id } }),
+        };
+      }),
+      hasHistory: !!(dBal && dBal.history && dBal.history.length),
+      history: dBal && dBal.history ? dBal.history.map(h => ({ date: h[0], store: h[1], n: '+1' })) : [],
+      notices: brandId ? this.notices(brandId, dBal ? dBal.variant : null).map(t => ({ text: t })) : [],
+      noticesLabel: s.noticesOpen ? '유의사항 닫기' : '유의사항 ›',
+      update: () => { if (dBal) this.setState({ sheet: null, sub: 'update', upd: { bal: dBal.id, mode: null, input: dBal.qty } }); },
+      map: () => { if (dBal) this.setState({ sheet: null, sub: 'benefitMap', ctx: { kind: 'stamp', id: dBal.id } }); },
+    };
+
+    const updModes = [
+      { k: 'add', label: '적립분 추가', note: '이번에 적립한 개수만 더해요' },
+      { k: 'set', label: '현재 개수 맞추기', note: '공식 앱에서 본 숫자로 바꿔요' },
+      { k: 'same', label: '개수 확인했어요', note: '확인 시점만 기록해요' },
+      { k: 'comp', label: '개수는 같지만 내역이 달라요', note: '확인이 필요한 항목으로 남겨요' },
+    ].map(m => ({ label: m.label, note: m.note, style: this.opt(s.upd.mode === m.k), pick: () => this.set({ upd: Object.assign({}, s.upd, { mode: m.k, input: m.k === 'add' ? 1 : (bal ? bal.qty : 0) }) }) }));
+    const um = s.upd.mode;
+    const updPreview = !bal ? '' : um === 'add' ? bal.qty + '개 → ' + (bal.qty + s.upd.input) + '개'
+      : um === 'set' ? bal.qty + '개 → ' + s.upd.input + '개'
+      : um === 'same' ? bal.qty + '개 유지 · 확인 시점만 갱신'
+      : um === 'comp' ? bal.qty + '개 유지 · 확인 필요 항목으로 이동' : '';
+
+    const ctx = s.ctx;
+    let ctxKindLabel = '', ctxTitle = '', ctxMeta = '', ctxStores = [], ctxFooter = '';
+    if (ctx && ctx.kind === 'stamp') {
+      const b = s.balances.filter(x => x.id === ctx.id)[0];
+      if (b) {
+        ctxKindLabel = '주변 적립 매장'; ctxTitle = META[b.brand].name + ' ' + b.program + ' · ' + b.qty + '개';
+        const so = this.soonest(b.brand);
+        ctxMeta = b.purpose + ' · ' + b.scope + (so ? ' · ' + md(so.date) + ' 만료' + (so.trust === 'estimated' ? ' 예상' : '') : '');
+        ctxFooter = '';
+        ctxStores = ALL.filter(x => x.brand === b.brand).map(x => {
+          const v = b.scope === '공통 적립' ? 'ok' : b.scope === '적립 범위 미확인' ? 'unk' : (x.name.indexOf('화정역점') >= 0 ? 'ok' : 'no');
+          return { name: x.name, walk: x.min === null ? '도보 정보 없음' : '도보 ' + x.min + '분', walkColor: x.min === null ? SUB : FG, basis: b.scope === '공통 적립' ? '근거: 확인된 공통 적립 정책 (9/01)' : b.scope === '적립 범위 미확인' ? '적립 범위를 모르는 잔액 — 브랜드 후보만 표시' : '근거: 매장 전용 적립으로 사용자가 확인 (9/08)', verdict: v === 'ok' ? '적립 가능' : v === 'no' ? '적립 불가' : '확인 필요', color: V[v].color, bg: V[v].bg };
+        });
+      }
+    } else if (ctx && ctx.kind === 'coupon') {
+      const c = s.coupons.filter(x => x.id === ctx.id)[0];
+      if (c) {
+        ctxKindLabel = '주변 사용 매장'; ctxTitle = META[c.brand].name + ' ' + c.name;
+        ctxMeta = c.kind + ' · ' + (c.date ? md(c.date) + ' 만료' + (c.trust === 'estimated' ? ' 예상' : '') : TRUST[c.trust].label);
+        ctxFooter = '메뉴·기간 등 다른 조건은 매장에서 확인하세요.';
+        ctxStores = ALL.filter(x => x.brand === c.brand).map(x => {
+          let v = 'unk', basis = '사용 가능 매장을 등록하지 않아 미확인입니다.';
+          if (c.scope === 'common') { v = 'ok'; basis = '근거: 확인된 공통 사용 정책 (9/02)'; }
+          if (c.scope === 'listed') { if (x.name.indexOf('화정역점') >= 0) { v = 'ok'; basis = '근거: 개인이 쿠폰에서 확인 (9/11)'; } else basis = '일부 목록 밖 — 불가가 아니라 미확인'; }
+          if (c.scope === 'conflict') basis = '공통·개인 근거 충돌로 이 조건만 확인 필요';
+          return { name: x.name, walk: x.min === null ? '도보 정보 없음' : '도보 ' + x.min + '분', walkColor: x.min === null ? SUB : FG, basis: basis, verdict: v === 'ok' ? '사용 가능' : '확인 필요', color: V[v].color, bg: V[v].bg };
+        });
+      }
+    }
+
+    const subTitles = {
+      capture: ['캡처 올리기', '공식 앱 화면 첨부'],
+      direct: ['직접 등록하기', '브랜드와 개수만 있으면 돼요'],
+      update: ['기록 갱신', ''],
+      convert: ['쿠폰 전환 기록', ''],
+      benefitMap: ['사용 가능 매장', ''],
+      pending: ['확인이 필요한 항목', ''],
+      search: ['매장 검색', ''],
+    };
+    const subAnnos = {
+      capture: 'F21 / POL20 — 기록당 3장·장당 10MB·계정 300MB. 첨부만으로 날짜·잔액·조건의 확인 수준을 올리지 않는다.',
+      direct: 'F19 / POL13 — 브랜드와 구분 가능한 이름만 필수. 등록일을 발급일로 간주하지 않고, 중복 의심은 안내만 한다.',
+      update: 'F10·F11 / POL07·POL08 — 적립분 추가는 해당 수량만, 맞추기는 절대값, 숫자 확인은 확인 시점만, 구성 변경 신고는 영향 묶음 보류.',
+      convert: 'F15·F16 / POL11 — 쿠폰 기록과 잔액 조정은 함께 성공하거나 모두 미반영. 이미 맞춘 잔액에는 추가 차감 없음.',
+      benefitMap: 'F25 / POL14·POL15 — 스탬프는 적립, 쿠폰은 사용 기준으로 가능·미확인·불가를 목적별로 판정한다.',
+      pending: 'F11·F16·F23 / POL08 — 보류 사유는 독립적으로 기록하고, 하나라도 남으면 자동 처리를 재개하지 않는다.',
+      search: 'F03 — 조회된 후보 간 정렬이며 전국 최단순이라고 표현하지 않는다.',
+    };
+    const st = subTitles[s.sub] || ['', ''];
+
+    const sheets = {
+      login: {
+        title: '혜택을 관리하려면 로그인이 필요해요',
+        body: '내 혜택 확인과 스탬프·쿠폰 등록은 로그인 후 이용할 수 있어요.',
+        dismiss: '둘러보기 계속하기',
+        actions: ['카카오', '네이버', 'Google'].map(p => ({
+          label: p + '로 시작하기', hasNote: false, note: '',
+          style: 'font:inherit;display:flex;flex-direction:column;gap:2px;align-items:center;border-radius:16px;padding:14px;cursor:pointer;min-height:50px;' + (p === '카카오' ? 'background:#FEE500;color:#1A1200;border:0' : p === '네이버' ? 'background:#03C75A;color:#fff;border:0' : 'background:#fff;color:#3C4043;border:1px solid #DADCE0'),
+          run: () => { this.setState({ logged: true, guest: false, provider: p, sheet: null, stage: 'permissions', permStep: 0 }); },
+        })),
+      },
+      register: {
+        title: '스탬프 / 쿠폰 등록',
+        body: '등록 방법을 선택해 주세요.',
+        dismiss: '닫기',
+        actions: [
+          { label: '📸 캡처 올리기', note: '공식 앱 화면 첨부', hasNote: true, style: this.opt(false) + ';align-items:flex-start', run: () => this.setState({ sheet: null, sub: 'capture', capture: 'idle' }) },
+          { label: '✏️ 직접 등록하기', note: '브랜드와 개수만 있으면 돼요', hasNote: true, style: this.opt(false) + ';align-items:flex-start', run: () => this.setState({ sheet: null, sub: 'direct', nd: { brand: '', variant: null, store: '', kind: 'stamp', name: '', qty: 0, trust: 'unknown', scope: 'unknown' } }) },
+        ],
+      },
+      directions: {
+        title: '외부 지도로 길찾기',
+        body: L.name + ' → ' + (s.cafe ? s.cafe.name : ''),
+        dismiss: '취소',
+        actions: [
+          { label: '네이버지도로 열기', note: '기본 지도 앱', hasNote: true, style: this.opt(true) + ';align-items:flex-start', run: () => { this.set({ sheet: null }); this.toast('네이버지도로 길찾기를 엽니다.'); } },
+          { label: '카카오맵으로 열기', note: '', hasNote: false, style: this.opt(false) + ';align-items:flex-start', run: () => { this.set({ sheet: null }); this.toast('카카오맵으로 길찾기를 엽니다.'); } },
+          { label: '현재 위치에서 출발로 변경', note: '', hasNote: false, style: this.small() + ';flex:none;min-width:0;width:100%', run: () => { this.set({ sheet: null }); this.toast('현재 위치에서 출발합니다.'); } },
+        ],
+      },
+      brand: {
+        title: brandId ? META[brandId].name : '',
+        body: '보유 스탬프와 쿠폰',
+        dismiss: '닫기', actions: [],
+      },
+    };
+    const sheet = s.sheet ? sheets[s.sheet] : null;
+
+    const jumpDefs = [['splash', '스플래시'], ['login', '로그인'], ['permissions', '권한'], ['guest', '게스트 지도'], ['map', '지도'], ['benefits', '내 혜택'], ['brand', '브랜드 상세'], ['register', '등록 방식'], ['direct', '직접 등록'], ['update', '기록 갱신'], ['convert', '전환 기록'], ['benefitMap', '혜택 지도'], ['alerts', '알림'], ['pending', '보류·충돌'], ['profile', '프로필']];
+    const activeJump = s.stage === 'splash' ? 'splash' : s.stage === 'login' ? 'login' : s.stage === 'permissions' ? 'permissions' : s.sheet ? (s.sheet === 'brand' ? 'brand' : s.sheet === 'register' ? 'register' : '') : s.sub ? s.sub : (!s.logged ? 'guest' : s.tab);
+
+    const nd = s.nd;
+    const trustDefs = [
+      { k: 'confirmed', label: '만료일을 알아요', note: '' },
+      { k: 'estimated', label: '발급일만 알아요', note: '' },
+      { k: 'unknown', label: '모르겠어요', note: '' },
+      { k: 'none', label: '기간 제한이 없어요', note: '' },
+    ];
+    const scopeDefs = [
+      { k: 'common', label: '모든 매장에서 사용', note: '' },
+      { k: 'listed', label: '쿠폰에 적힌 매장만', note: '' },
+      { k: 'unknown', label: '모르겠어요', note: '' },
+    ];
+    const needsStore = !!nd.brand && (META[nd.brand].type === 'store' || (nd.brand === 'mammoth' && nd.variant === 'coffee'));
+    const ndStores = nd.brand ? this.brandStores(nd.brand, nd.brand === 'mammoth' ? nd.variant : null) : [];
+    const storeSum = ndStores.reduce((n, nm) => n + (nd.stores[nm] || 0), 0);
+    const canSaveDirect = !!nd.brand && (nd.kind === 'coupon' ? !!nd.name : (!needsStore || (storeSum > 0 && storeSum === nd.qty)));
+
+    return {
+      frameGlobal: platform === 'ios' ? 'IOSDevice' : 'AndroidDevice',
+      annotate: anno,
+      setIOS: () => this.set({ platform: 'ios' }), setAndroid: () => this.set({ platform: 'android' }),
+      iosTabStyle: this.pill(platform === 'ios', { fs: 12.5, pad: '7px 14px', mh: 28 }),
+      androidTabStyle: this.pill(platform === 'android', { fs: 12.5, pad: '7px 14px', mh: 28 }),
+      annoBtnStyle: this.pill(anno, { fs: 12.5, pad: '7px 12px', mh: 34 }),
+      toggleAnnotate: () => this.set({ anno: !anno }),
+      reset: () => { clearTimeout(this._t); this.setState(Object.assign({ stage: 'splash', logged: false, guest: false, tab: 'benefits', sub: null, sheet: null, brand: null, cafe: null, ctx: null, sort: 'expiry', filter: 'all', range: 30, offline: true, permStep: 0, toast: null, capture: 'idle', upd: { bal: null, mode: null, input: 0 }, conv: { bal: null, issued: null }, nd: { brand: '', variant: null, store: '', kind: 'stamp', name: '', qty: 0, trust: 'unknown', scope: 'unknown' } }, seed())); this._t = setTimeout(() => { if (this.state.stage === 'splash') this.setState({ stage: 'login' }); }, 2600); },
+
+      jumps: jumpDefs.map(j => ({
+        label: j[1], style: this.pill(activeJump === j[0], { fs: 11.5, pad: '6px 11px', mh: 30 }),
+        go: () => {
+          const k = j[0];
+          if (k === 'splash' || k === 'login' || k === 'permissions') { this.setState({ stage: k, sub: null, sheet: null, permStep: 0 }); return; }
+          if (k === 'guest') { this.setState({ stage: 'app', logged: false, guest: true, tab: 'map', sub: null, sheet: null }); return; }
+          const base = { stage: 'app', logged: true, guest: false, sub: null, sheet: null };
+          if (k === 'map' || k === 'benefits' || k === 'alerts' || k === 'profile') this.setState(Object.assign(base, { tab: k }));
+          else if (k === 'brand') this.setState(Object.assign(base, { tab: 'benefits', sheet: 'brand', brand: 'tenpercent', detailUnit: 'b7' }));
+          else if (k === 'register') this.setState(Object.assign(base, { tab: 'benefits', sheet: 'register' }));
+          else if (k === 'update') this.setState(Object.assign(base, { tab: 'benefits', sub: 'update', upd: { bal: 'b1', mode: null, input: 8 } }));
+          else if (k === 'convert') this.setState(Object.assign(base, { tab: 'benefits', sub: 'convert', conv: { bal: 'b1', issued: null } }));
+          else if (k === 'benefitMap') this.setState(Object.assign(base, { tab: 'benefits', sub: 'benefitMap', ctx: { kind: 'coupon', id: 'k4' } }));
+          else this.setState(Object.assign(base, { tab: 'benefits', sub: k }));
+        },
+      })),
+
+      sSplash: s.stage === 'splash', sLogin: s.stage === 'login', sPerm: s.stage === 'permissions', sApp: s.stage === 'app',
+      skipSplash: () => { clearTimeout(this._t); this.set({ stage: 'login' }); },
+      socialButtons: [
+        { label: '카카오로 시작하기', bg: '#FEE500', fg: '#1A1200', bd: '0' },
+        { label: '네이버로 시작하기', bg: '#03C75A', fg: '#ffffff', bd: '0' },
+        { label: 'Google로 시작하기', bg: '#ffffff', fg: '#3C4043', bd: '1px solid #DADCE0' },
+      ].map(b => ({ label: b.label, style: 'font:inherit;font-size:17px;font-weight:800;letter-spacing:-0.2px;border-radius:16px;padding:16px;cursor:pointer;min-height:50px;background:' + b.bg + ';color:' + b.fg + ';border:' + b.bd, run: () => this.setState({ stage: 'permissions', permStep: 0, logged: true, guest: false, provider: b.label.split('로')[0] }) })),
+      startGuest: () => this.setState({ stage: 'app', logged: false, guest: true, tab: 'map' }),
+
+      perm: Object.assign({}, PERMS[s.permStep], { items: PERMS[s.permStep].items.map(i => ({ label: i })), cta: 'linear-gradient(135deg,#3D2B1F 0%,' + PERMS[s.permStep].color + ' 100%)' }),
+      permDots: PERMS.map((p, i) => ({ style: 'height:6px;border-radius:999px;width:' + (i === s.permStep ? '22px' : '8px') + ';background:' + (i <= s.permStep ? ACC : LINE) })),
+      permAllow: () => { if (s.permStep < PERMS.length - 1) this.set({ permStep: s.permStep + 1 }); else { this.setState({ stage: 'app', tab: 'benefits' }); this.toast('만료가 가까워지면 알려드릴게요.'); } },
+      permSkip: () => { if (s.permStep < PERMS.length - 1) this.set({ permStep: s.permStep + 1 }); else { this.setState({ stage: 'app', tab: 'benefits' }); this.toast('설정에서 언제든 바꿀 수 있어요.'); } },
+
+      isGuest: !s.logged, isMember: s.logged, providerLabel: s.provider,
+      askLogin: () => this.set({ sheet: 'login' }),
+      openSearch: () => this.set({ sub: 'search' }),
+      offline: s.offline && s.logged,
+
+      tabs: [['map', '지도', '◈'], ['benefits', '내 혜택', '▤'], ['alerts', '알림', '◔'], ['profile', '프로필', '◍']].map(t => ({
+        label: t[1], mark: t[2], badge: t[0] === 'alerts' && alerts.length > 0, badgeCount: alerts.length,
+        style: 'flex:1;font:inherit;background:transparent;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 0 6px;min-height:46px;color:' + (s.tab === t[0] && !s.sub ? ACC : SUB),
+        go: () => { if (!s.logged && t[0] !== 'map') { this.set({ sheet: 'login' }); return; } this.setState({ tab: t[0], sub: null, sheet: null }); },
+      })),
+
+      vMap: s.tab === 'map' && !s.sub, vBenefits: s.tab === 'benefits' && !s.sub && s.logged,
+      vAlerts: s.tab === 'alerts' && !s.sub, vProfile: s.tab === 'profile' && !s.sub,
+      vSub: !!s.sub, subTitle: st[0], subSub: st[1], subAnno: subAnnos[s.sub] || '',
+      closeSub: () => this.set({ sub: null }),
+      subCapture: s.sub === 'capture', subDirect: s.sub === 'direct', subUpdate: s.sub === 'update',
+      subConvert: s.sub === 'convert', subBenefitMap: s.sub === 'benefitMap', subPending: s.sub === 'pending', subSearch: s.sub === 'search',
+
+      mapPins: (s.pinMode === 'all' ? cafes.filter(c => c.min !== null) : cafes.filter(c => c.min !== null).filter((c, i, arr) => arr.findIndex(x => x.brand === c.brand) === i)).map(c => {
+        const all = s.pinMode === 'all';
+        const sz = all ? 32 : 38;
+        return {
+          short: META[c.brand].short, min: c.min, showLabel: !all,
+          wrapStyle: 'position:absolute;left:' + c.x + ';top:' + c.y + ';transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:0;padding:0;font:inherit;cursor:pointer',
+          badgeStyle: 'width:' + sz + 'px;height:' + sz + 'px;border-radius:' + (all ? 11 : 13) + 'px;border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center;color:#fff;font-size:' + (all ? 11 : 12.5) + 'px;font-weight:700;background:' + META[c.brand].color,
+          labelStyle: 'white-space:nowrap;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 1px 3px rgba(0,0,0,.12);color:' + META[c.brand].color,
+          go: () => { if (!s.logged) { this.set({ sheet: 'login' }); return; } this.setState({ sheet: 'brand', brand: c.brand, detailUnit: null }); },
+        };
+      }),
+      pinNearStyle: this.pill(s.pinMode === 'near', { fs: 11, pad: '6px 10px', mh: 30 }),
+      pinAllStyle: this.pill(s.pinMode === 'all', { fs: 11, pad: '6px 10px', mh: 30 }),
+      setPinNear: () => this.set({ pinMode: 'near' }),
+      setPinAll: () => { this.set({ pinMode: 'all' }); this.toast('모든 지점을 표시합니다.'); },
+      pinModeNote: s.pinMode === 'all' ? '모든 지점 ' + cafes.filter(c => c.min !== null).length + '곳' : '브랜드별 최단 1곳',
+      locLabel: L.name + ' 기준' + (s.gps ? ' · 현재 위치' : ''),
+      locQuery: s.locQuery,
+      onLocQuery: (e) => this.setState({ locQuery: e.target.value }),
+      onLocKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.applyLocQuery(); } },
+      runLocSearch: () => this.applyLocQuery(),
+      useGps: () => {
+        this.setState({ loc: 'hwajeong', gps: true, locQuery: '' });
+        this.toast('현재 위치로 이동했습니다.');
+      },
+      gpsStyle: 'flex:none;width:44px;height:44px;border-radius:14px;cursor:pointer;font:inherit;font-size:16px;display:flex;align-items:center;justify-content:center;' + (s.gps ? 'background:linear-gradient(135deg,#3D2B1F 0%,#C8773A 100%);color:#fff;border:0' : 'background:#FFFFFF;color:' + PRI + ';border:1px solid ' + LINE),
+      presets: PRESETS.map(p => ({
+        label: p.label + ' · ' + LOCS[p.loc].name,
+        style: this.pill(!s.gps && s.loc === p.loc, { fs: 11.5, pad: '7px 12px', mh: 34 }),
+        pick: () => { this.setState({ loc: p.loc, gps: false, locQuery: '' }); this.toast(LOCS[p.loc].name + ' 주변 카페를 보여드려요.'); },
+      })),
+      zoomIn: () => this.toast('지도를 확대했습니다.'),
+      zoomOut: () => this.toast('지도를 축소했습니다.'),
+      set15: () => this.set({ range: 15 }), set30: () => this.set({ range: 30 }),
+      r15Style: this.pill(s.range === 15, { fs: 11, pad: '6px 10px', mh: 30 }),
+      r30Style: this.pill(s.range === 30, { fs: 11, pad: '6px 10px', mh: 30 }),
+      filters: [['all', '전체'], ['stamp', '적립 가능'], ['coupon', '쿠폰 사용']].filter(f => s.logged || f[0] === 'all').map(f => ({ label: f[1], style: this.pill(s.filter === f[0], { fs: 11.5, pad: '7px 12px', mh: 34 }), pick: () => this.set({ filter: f[0] }) })),
+      cafeCount: cafes.length,
+      brandCount: cafes.reduce((n, c) => n.indexOf(c.brand) >= 0 ? n : n.concat([c.brand]), []).length,
+      cafeGroups: cafeGroups,
+
+      sort: s.sort, sortExpiry: () => this.set({ sort: 'expiry' }), sortPref: () => this.set({ sort: 'pref' }),
+      sortExpiryStyle: 'white-space:nowrap;flex:none;font:inherit;font-size:11.5px;font-weight:600;padding:7px 12px;border-radius:999px;cursor:pointer;min-height:32px;border:0;' + (s.sort === 'expiry' ? 'background:#fff;color:' + FG + ';box-shadow:0 1px 3px rgba(0,0,0,.08)' : 'background:transparent;color:' + SUB),
+      sortPrefStyle: 'white-space:nowrap;flex:none;font:inherit;font-size:11.5px;font-weight:600;padding:7px 12px;border-radius:999px;cursor:pointer;min-height:32px;border:0;' + (s.sort === 'pref' ? 'background:#fff;color:' + FG + ';box-shadow:0 1px 3px rgba(0,0,0,.08)' : 'background:transparent;color:' + SUB),
+      cards: cards, hasPending: pending.length > 0, pendingCount: pending.length,
+      goPending: () => this.set({ sub: 'pending' }),
+      openRegister: () => this.set({ sheet: 'register' }),
+
+      alerts: alerts,
+
+      settingGroups: [
+        { label: '알림', rows: [
+          { label: '만료 임박 알림', desc: '', hasDesc: false, trail: '켜짐', run: () => this.toast('만료가 가까워지면 알려드립니다.') },
+          { label: '이 기기에서 알림 받기', desc: '', hasDesc: false, trail: '켜짐', run: () => this.toast('이 기기에서 알림을 받습니다.') },
+        ] },
+        { label: '내 정보', rows: [
+          { label: '선호 브랜드', desc: '', hasDesc: false, trail: '4개', run: () => this.toast('선호 브랜드 순으로 내 혜택을 정렬합니다.') },
+          { label: '저장한 장소', desc: '', hasDesc: false, trail: '집 · 회사 · 삼송', run: () => this.toast('저장한 장소는 지도에서 바로 선택할 수 있습니다.') },
+        ] },
+        { label: '기록 관리', rows: [
+          { label: '확인이 필요한 항목', desc: '', hasDesc: false, trail: String(pending.length) + '건', run: () => this.set({ sub: 'pending' }) },
+          { label: '휴지통', desc: '', hasDesc: false, trail: '4건', run: () => this.toast('삭제한 기록은 60일 안에 복원할 수 있습니다.') },
+          { label: '임시 작성', desc: '', hasDesc: false, trail: '2건', run: () => this.toast('저장하기 전 초안입니다.') },
+          { label: '저장 공간 관리', desc: '', hasDesc: false, trail: '247MB / 300MB', run: () => this.toast('사진 첨부에 247MB를 사용했습니다. 휴지통 사진을 영구 삭제하면 공간이 늘어납니다.') },
+        ] },
+        { label: '계정', rows: [
+          { label: '연결된 계정', desc: '', hasDesc: false, trail: s.provider, run: () => this.toast('소셜 계정별로 따로 관리됩니다.') },
+          { label: '도움말', desc: '', hasDesc: false, trail: '›', run: () => this.toast('데이터 관리·확인 기준 안내를 볼 수 있습니다.') },
+          { label: '로그아웃', desc: '', hasDesc: false, trail: '›', run: () => { this.setState({ stage: 'login', logged: false, guest: false, tab: 'benefits', sub: null, sheet: null }); this.toast('로그아웃했습니다.'); } },
+          { label: '계정 탈퇴', desc: '', hasDesc: false, trail: '›', run: () => this.toast('탈퇴 시 기록은 복원할 수 없습니다.') },
+        ] },
+      ].map(g => ({ label: g.label, rows: g.rows.map(r => Object.assign({}, r, { trailStyle: 'white-space:nowrap;flex:none;font-size:11.5px;color:' + SUB })) })),
+
+      captureBoxStyle: 'font:inherit;width:100%;box-sizing:border-box;height:190px;border-radius:18px;border:2px dashed ' + (s.capture === 'done' ? 'rgba(4,120,87,.4)' : LINE) + ';background:' + (s.capture === 'done' ? '#ECFDF5' : '#FFFFFF') + ';display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;padding:16px',
+      captureIcon: s.capture === 'idle' ? '🖼' : s.capture === 'loading' ? '◌' : '✓',
+      captureTitle: s.capture === 'idle' ? '사진 선택' : s.capture === 'loading' ? '업로드 중...' : '첨부 완료 · 1장',
+      captureNote: s.capture === 'idle' ? '갤러리에서 캡처 이미지를 올려주세요' : s.capture === 'loading' ? '업로드하고 있어요' : '3장 중 1장 첨부',
+      doCapture: () => {
+        if (s.capture === 'loading') return;
+        if (s.capture === 'done') { this.toast('이전 첨부는 휴지통으로 이동합니다.'); return; }
+        this.set({ capture: 'loading' });
+        clearTimeout(this._cap);
+        this._cap = setTimeout(() => { this.setState({ capture: 'done' }); this.toast('캡처를 첨부했습니다.'); }, 1400);
+      },
+
+      brandOptions: ORDER.map(id => ({ short: META[id].name.replace('MGC커피', 'MGC'), style: this.pill(nd.brand === id, { fs: 12, pad: '11px 6px', mh: 44 }) + ';flex:1;width:100%', pick: () => this.set({ nd: Object.assign({}, nd, { brand: id, variant: id === 'mammoth' ? 'express' : null, store: '' }) }) })),
+      isMammoth: nd.brand === 'mammoth',
+      variantOptions: [['express', '매머드익스프레스'], ['coffee', '매머드커피']].map(v => ({ label: v[1], style: this.pill(nd.variant === v[0], { fs: 12.5, pad: '12px 10px', mh: 46 }) + ';flex:1', pick: () => this.set({ nd: Object.assign({}, nd, { variant: v[0] }) }) })),
+      needsStore: needsStore && nd.kind === 'stamp',
+      storeRowsInput: ndStores.map(nm => ({ label: nm, n: nd.stores[nm] || 0,
+        dec: () => { const m = Object.assign({}, nd.stores); m[nm] = Math.max(0, (m[nm] || 0) - 1); this.set({ nd: Object.assign({}, nd, { stores: m }) }); },
+        inc: () => { const m = Object.assign({}, nd.stores); m[nm] = (m[nm] || 0) + 1; this.set({ nd: Object.assign({}, nd, { stores: m }) }); } })),
+      storeSumText: storeSum === nd.qty ? '총 스탬프 ' + nd.qty + '개 · 매장 합계 ' + storeSum + '개' : '총 스탬프 ' + nd.qty + '개와 매장 합계 ' + storeSum + '개가 달라요',
+      storeSumColor: storeSum === nd.qty ? SUB : '#B45309',
+      pickStamp: () => this.set({ nd: Object.assign({}, nd, { kind: 'stamp' }) }),
+      pickCoupon: () => this.set({ nd: Object.assign({}, nd, { kind: 'coupon' }) }),
+      kindStampStyle: this.pill(nd.kind === 'stamp', { fs: 13, pad: '12px 16px', mh: 46 }) + ';flex:1',
+      kindCouponStyle: this.pill(nd.kind === 'coupon', { fs: 13, pad: '12px 16px', mh: 46 }) + ';flex:1',
+      isStampKind: nd.kind === 'stamp', isCouponKind: nd.kind === 'coupon',
+      newQty: nd.qty + '개',
+      qtyUp: () => this.set({ nd: Object.assign({}, nd, { qty: nd.qty + 1 }) }),
+      qtyDown: () => this.set({ nd: Object.assign({}, nd, { qty: Math.max(0, nd.qty - 1) }) }),
+      nameOptions: ['아메리카노 1잔 무료', '2000원 할인', '1+1 행사 쿠폰'].map(n => ({ label: n, style: this.pill(nd.name === n, { fs: 12, pad: '10px 12px', mh: 42 }), pick: () => this.set({ nd: Object.assign({}, nd, { name: n }) }) })),
+      trustOptions: trustDefs.map(d => ({ label: d.label, note: d.note, color: TRUST[d.k].color, style: this.opt(nd.trust === d.k), pick: () => this.set({ nd: Object.assign({}, nd, { trust: d.k }) }) })),
+      scopeOptions: scopeDefs.map(d => ({ label: d.label, note: d.note, style: this.opt(nd.scope === d.k), pick: () => this.set({ nd: Object.assign({}, nd, { scope: d.k }) }) })),
+      dupSuspect: nd.kind === 'coupon' && nd.brand === 'mega' && nd.name === '아메리카노 1잔 무료',
+      dupText: '메가MGC커피 · 아이스 아메리카노 1+1 · 9/20 만료 쿠폰을 이미 보유하고 있습니다.',
+      ndMore: !!nd.more,
+      ndMoreLabel: nd.more ? '추가 정보 접기' : '추가 정보 (만료일·사용 매장)',
+      ndMoreStyle: 'font:inherit;font-size:12.5px;font-weight:700;color:#3D2B1F;background:#F0EDE8;border:0;border-radius:12px;padding:12px;cursor:pointer;min-height:44px',
+      toggleNdMore: () => this.set({ nd: Object.assign({}, nd, { more: !nd.more }) }),
+      saveDirectStyle: this.cta(canSaveDirect),
+      saveDirect: () => {
+        if (!canSaveDirect) { this.toast(needsStore && nd.kind === 'stamp' ? '매장별 적립 합계를 총 스탬프 수와 맞춰 주세요.' : '브랜드를 선택해 주세요. 쿠폰은 이름도 필요해요.'); return; }
+        const ss = needsStore ? ndStores.filter(nm => nd.stores[nm]).map(nm => [nm, nd.stores[nm]]) : null;
+        if (nd.kind === 'stamp') {
+          const exist = s.balances.filter(b => b.brand === nd.brand && (b.variant || null) === (nd.variant || null))[0];
+          if (exist) {
+            this.setState({ balances: s.balances.map(b => b.id === exist.id ? Object.assign({}, b, { qty: nd.qty, official: nd.qty, officialAt: '방금', storeStamps: ss || b.storeStamps, bundles: [{ n: nd.qty, date: null, trust: 'unknown' }], comp: false }) : b), sub: null, sheet: 'brand', brand: nd.brand, detailUnit: exist.id });
+            this.toast('기존 기록을 수정했습니다.');
+            return;
+          }
+          if (nd.brand === 'mammoth' && nd.variant === 'coffee' && ss && ss.length) {
+            const made = ss.map((r, i) => ({ id: 'n' + Date.now() + i, brand: 'mammoth', variant: 'coffee', store: r[0], program: '매머드커피', purpose: '교환용', scope: '매장 적립', qty: r[1], official: r[1], officialAt: '방금', comp: false, conv: 0, storeStamps: null, history: [], bundles: [{ n: r[1], date: null, trust: 'unknown' }] }));
+            this.setState({ balances: s.balances.concat(made), sub: null, sheet: 'brand', brand: 'mammoth', detailUnit: made[0].id });
+            this.toast('매머드커피 스탬프를 매장별로 저장했습니다.');
+            return;
+          }
+          const nid = 'n' + Date.now();
+          this.setState({ balances: s.balances.concat([{ id: nid, brand: nd.brand, variant: nd.variant, store: nd.brand === 'mammoth' && nd.variant === 'coffee' ? (ss && ss[0] ? ss[0][0] : '') : null, program: '기본 적립', purpose: '교환용', scope: needsStore ? '매장 적립' : '공통 적립', qty: nd.qty, official: nd.qty, officialAt: '방금', comp: false, conv: 0, storeStamps: ss, history: [], bundles: [{ n: nd.qty, date: null, trust: 'unknown' }] }]), sub: null, sheet: 'brand', brand: nd.brand, detailUnit: nid });
+          this.toast('스탬프 ' + nd.qty + '개로 저장했습니다.');
+          return;
+        }
+        const date = nd.trust === 'confirmed' ? rel(7) : nd.trust === 'estimated' ? rel(30) : null;
+        this.setState({ coupons: s.coupons.concat([{ id: 'u' + Date.now(), brand: nd.brand, variant: nd.variant, name: nd.name, kind: '행사·기타 쿠폰', date: date, issued: rel(0), usableFrom: null, usableMin: 0, trust: nd.trust, life: 'held', scope: nd.scope === 'common' ? 'common' : (META[nd.brand].type === 'store' ? 'store' : 'common'), stores: null }]), sub: null, sheet: 'brand', brand: nd.brand });
+        this.toast('쿠폰을 등록했습니다.');
+      },
+
+      updTarget: bal ? META[bal.brand].name : '',
+      updQty: bal ? bal.qty + '개' : '',
+      updModes: updModes, updNeedsNumber: um === 'add' || um === 'set',
+      updNumberLabel: um === 'add' ? '추가한 개수' : '공식 앱의 현재 잔액',
+      updInput: s.upd.input,
+      updHint: um === 'add' ? '이번에 적립한 개수' : '공식 앱에 보이는 숫자',
+      updUp: () => this.set({ upd: Object.assign({}, s.upd, { input: s.upd.input + 1 }) }),
+      updDown: () => this.set({ upd: Object.assign({}, s.upd, { input: Math.max(um === 'add' ? 1 : 0, s.upd.input - 1) }) }),
+      updHasPreview: !!um, updPreview: updPreview, updBtnStyle: this.cta(!!um),
+      applyUpdate: () => {
+        if (!bal || !um) { this.toast('갱신 방식을 선택하세요.'); return; }
+        let msg = '';
+        const next = s.balances.map(b => {
+          if (b.id !== bal.id) return b;
+          if (um === 'add') { msg = '적립분 ' + s.upd.input + '개를 추가했습니다. 전체 공식 확인 시점은 갱신하지 않았습니다.'; return Object.assign({}, b, { qty: b.qty + s.upd.input, bundles: b.bundles.concat([{ n: s.upd.input, date: '2027-09-14', trust: 'estimated' }]) }); }
+          if (um === 'set') { msg = '현재 잔액을 ' + s.upd.input + '개로 맞췄습니다. 이미 반영된 만료·전환을 다시 차감하지 않았습니다.'; return Object.assign({}, b, { qty: s.upd.input, official: s.upd.input, officialAt: '방금' }); }
+          if (um === 'same') { msg = '잔액 ' + b.qty + '개를 유지하고 공식 확인 수량 ' + b.qty + '개와 확인 시점만 기록했습니다.'; return Object.assign({}, b, { official: b.qty, officialAt: '방금' }); }
+          msg = '잔액 ' + b.qty + '개를 유지하고 영향 가능한 기존 묶음 전체를 보류했습니다.';
+          return Object.assign({}, b, { comp: true });
+        });
+        this.setState({ balances: next, sub: null, sheet: 'brand', brand: bal.brand });
+        this.toast(msg);
+      },
+
+      convTarget: convBal ? META[convBal.brand].name + ' · 스탬프 ' + convBal.qty + '개' : '',
+      convOptions: [
+        { k: 'yes', label: '발급됐어요', note: '쿠폰을 추가하고 스탬프를 차감해요' },
+        { k: 'already', label: '발급됐고, 개수도 이미 맞췄어요', note: '쿠폰만 추가해요' },
+        { k: 'no', label: '모르겠어요', note: '확인이 필요한 항목으로 남겨요' },
+      ].map(o => ({ label: o.label, note: o.note, style: this.opt(s.conv.issued === o.k), pick: () => this.set({ conv: Object.assign({}, s.conv, { issued: o.k }) }) })),
+      convIssued: s.conv.issued === 'yes',
+      convUnknown: s.conv.issued === 'no',
+      convBundles: convBal ? convBal.bundles.map(u => ({ qty: u.n + '개', dateLabel: u.date ? md(u.date) + ' 만료' + (u.trust === 'estimated' ? ' 예상' : '') : '만료일 미확인', trust: TRUST[u.trust].label, color: TRUST[u.trust].color })) : [],
+      convBtnLabel: s.conv.issued === 'no' ? '전환 확인 필요로 저장' : '전환 기록 저장',
+      convBtnStyle: this.cta(!!s.conv.issued),
+      applyConvert: () => {
+        if (!convBal || !s.conv.issued) { this.toast('발급 여부를 선택하세요.'); return; }
+        if (s.conv.issued === 'no') {
+          this.setState({ balances: s.balances.map(x => x.id === convBal.id ? Object.assign({}, x, { conv: x.qty }) : x), sub: 'pending' });
+          this.toast('쿠폰을 만들지 않고 잔액도 유지했습니다. 해당 수량의 만료 자동 차감·알림을 보류합니다.');
+          return;
+        }
+        const deduct = s.conv.issued === 'yes' ? Math.min(META[convBal.brand].goal, convBal.qty) : 0;
+        this.setState({
+          balances: s.balances.map(x => x.id === convBal.id ? Object.assign({}, x, { qty: x.qty - deduct, official: x.qty - deduct, officialAt: '방금', bundles: deduct ? [] : x.bundles }) : x),
+          coupons: s.coupons.concat([{ id: 'cv' + Date.now(), brand: convBal.brand, name: '스탬프 교환 쿠폰', kind: '스탬프 쿠폰', date: null, trust: 'unknown', life: 'held', scope: 'unknown' }]),
+          sub: null, sheet: 'brand', brand: convBal.brand,
+        });
+        this.toast(deduct ? '쿠폰 기록과 스탬프 ' + deduct + '개 차감을 함께 저장했습니다. 재시도해도 한 번만 반영됩니다.' : '연결 기록만 남겼습니다. 이미 맞춘 잔액에 추가 차감하지 않았습니다.');
+      },
+
+      ctxKindLabel: ctxKindLabel, ctxTitle: ctxTitle, ctxMeta: ctxMeta, ctxStores: ctxStores, ctxFooter: ctxFooter,
+      ctxPins: ctxStores.map((x, i) => ({ mark: x.color === V.ok.color ? '●' : x.color === V.no.color ? '✕' : '○', style: 'position:absolute;left:' + (20 + i * 19) + '%;top:' + (26 + (i % 3) * 19) + '%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;border:2px solid #fff;background:#FFFFFF;box-shadow:0 2px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-size:11px;color:' + x.color })),
+      legend: [{ label: '가능으로 확인', color: V.ok.color }, { label: '여부 미확인', color: V.unk.color }, { label: '불가로 확인', color: V.no.color }],
+
+      pendingCards: pending, noPending: pending.length === 0,
+      searchRows: ORDER.map(id => ({ name: META[id].name, short: META[id].short, color: META[id].color, store: META[id].store, stampText: '스탬프 ' + (s.balances.filter(b => b.brand === id)[0] ? s.balances.filter(b => b.brand === id)[0].qty : 0) + '개', go: () => this.setState({ sub: null, sheet: 'brand', brand: id, detailUnit: null }) })),
+
+      hasSheet: !!sheet, sheetTitle: sheet ? sheet.title : '', sheetBody: sheet ? sheet.body : '',
+      sheetActions: sheet ? sheet.actions : [], sheetHasActions: !!(sheet && sheet.actions.length),
+      sheetIsBrand: s.sheet === 'brand' && !!brandId, sheetDismiss: sheet ? sheet.dismiss : '닫기',
+      closeSheet: () => this.set({ sheet: null }),
+      detail: detail, noticesOpen: s.noticesOpen, toggleNotices: () => this.set({ noticesOpen: !s.noticesOpen }),
+      noCards: cards.length === 0,
+      hasToast: !!s.toast, toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>
