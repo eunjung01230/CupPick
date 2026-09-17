@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "db:smoke": "node --env-file-if-exists=.env.local scripts/db-smoke.ts"
+    "db:smoke": "node --env-file-if-exists=.env.local scripts/db-smoke.ts",
+    "db:seed": "node --env-file-if-exists=.env.local scripts/db-seed.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
