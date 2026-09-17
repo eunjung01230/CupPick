@@ -1,0 +1,6 @@
+{
+  // Claude Design 캔버스 파일(docs/design/**/*.dc.html)은 style 속성에
+  // {{ }} 템플릿 표현식을 쓴다. VSCode 내장 CSS 검증기가 이를 잘못된 CSS로
+  // 판단해 오류를 다량 표시하므로 style 속성 검증만 끈다.
+  "html.validate.styles": false
+}
