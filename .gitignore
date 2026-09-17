@@ -32,3 +32,6 @@ next-env.d.ts
 
 # local Claude settings
 .claude/settings.local.json
+.vercel
+.env*
+!.env.example
