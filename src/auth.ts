@@ -6,11 +6,13 @@
  * 경로만 만든다.
  *
  * client id/secret과 AUTH_SECRET은 코드에 두지 않는다. Auth.js v5가
- * AUTH_SECRET · AUTH_GOOGLE_ID · AUTH_GOOGLE_SECRET 환경변수를 규칙대로
- * 자동으로 읽는다.
+ * AUTH_SECRET과 provider별 AUTH_<PROVIDER>_ID · AUTH_<PROVIDER>_SECRET
+ * 환경변수를 규칙대로 자동으로 읽는다(GOOGLE · KAKAO · NAVER).
  */
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import Kakao from "next-auth/providers/kakao";
+import Naver from "next-auth/providers/naver";
 // 아래 declare module "next-auth/jwt"가 해석되려면 모듈이 프로그램에 올라와야 한다.
 import type {} from "next-auth/jwt";
 
@@ -33,7 +35,7 @@ declare module "next-auth/jwt" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
+  providers: [Google, Kakao, Naver],
   session: { strategy: "jwt" },
   callbacks: {
     // account는 최초 로그인 때만 들어온다. 이후 호출에서는 token에 남은 값을 쓴다.

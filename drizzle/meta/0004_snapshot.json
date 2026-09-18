@@ -1,0 +1,2253 @@
+{
+  "id": "f6e459fa-b2ee-4378-b738-cb6d7c7b7ff7",
+  "prevId": "83d01526-5fd3-4526-b1fb-09ef82138c9f",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.auth_accounts": {
+      "name": "auth_accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "auth_provider": {
+          "name": "auth_provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_subject": {
+          "name": "provider_subject",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider_email": {
+          "name": "provider_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_auth_accounts_user": {
+          "name": "ix_auth_accounts_user",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "auth_accounts_user_id_users_id_fk": {
+          "name": "auth_accounts_user_id_users_id_fk",
+          "tableFrom": "auth_accounts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_auth_accounts_provider_subject": {
+          "name": "uq_auth_accounts_provider_subject",
+          "nullsNotDistinct": false,
+          "columns": [
+            "auth_provider",
+            "provider_subject"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_auth_accounts_provider": {
+          "name": "chk_auth_accounts_provider",
+          "value": "\"auth_accounts\".\"auth_provider\" in ('google', 'naver', 'kakao')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.brand_program_tiers": {
+      "name": "brand_program_tiers",
+      "schema": "",
+      "columns": {
+        "brand_program_id": {
+          "name": "brand_program_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "step_no": {
+          "name": "step_no",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "threshold": {
+          "name": "threshold",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reward_name": {
+          "name": "reward_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "brand_program_tiers_brand_program_id_brand_programs_id_fk": {
+          "name": "brand_program_tiers_brand_program_id_brand_programs_id_fk",
+          "tableFrom": "brand_program_tiers",
+          "tableTo": "brand_programs",
+          "columnsFrom": [
+            "brand_program_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "brand_program_tiers_brand_program_id_step_no_pk": {
+          "name": "brand_program_tiers_brand_program_id_step_no_pk",
+          "columns": [
+            "brand_program_id",
+            "step_no"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_brand_program_tiers_threshold": {
+          "name": "uq_brand_program_tiers_threshold",
+          "nullsNotDistinct": false,
+          "columns": [
+            "brand_program_id",
+            "threshold"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_brand_program_tiers_step_no": {
+          "name": "chk_brand_program_tiers_step_no",
+          "value": "\"brand_program_tiers\".\"step_no\" >= 1"
+        },
+        "chk_brand_program_tiers_threshold": {
+          "name": "chk_brand_program_tiers_threshold",
+          "value": "\"brand_program_tiers\".\"threshold\" between 1 and 999999"
+        },
+        "chk_brand_program_tiers_reward_len": {
+          "name": "chk_brand_program_tiers_reward_len",
+          "value": "char_length(\"brand_program_tiers\".\"reward_name\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.brand_programs": {
+      "name": "brand_programs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "brand_id": {
+          "name": "brand_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "program_type": {
+          "name": "program_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exchange_threshold": {
+          "name": "exchange_threshold",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "min_store_count": {
+          "name": "min_store_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "per_store_separated": {
+          "name": "per_store_separated",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "reference_status": {
+          "name": "reference_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'confirmed'"
+        },
+        "display_order": {
+          "name": "display_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_brand_programs_brand_order": {
+          "name": "ix_brand_programs_brand_order",
+          "columns": [
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "display_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "brand_programs_brand_id_brands_id_fk": {
+          "name": "brand_programs_brand_id_brands_id_fk",
+          "tableFrom": "brand_programs",
+          "tableTo": "brands",
+          "columnsFrom": [
+            "brand_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_brand_programs_brand_name": {
+          "name": "uq_brand_programs_brand_name",
+          "nullsNotDistinct": false,
+          "columns": [
+            "brand_id",
+            "display_name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_brand_programs_program_type": {
+          "name": "chk_brand_programs_program_type",
+          "value": "\"brand_programs\".\"program_type\" in ('cumulative', 'store_conditional', 'tiered')"
+        },
+        "chk_brand_programs_reference_status": {
+          "name": "chk_brand_programs_reference_status",
+          "value": "\"brand_programs\".\"reference_status\" in ('confirmed', 'unconfirmed', 'suspended')"
+        },
+        "chk_brand_programs_name_len": {
+          "name": "chk_brand_programs_name_len",
+          "value": "char_length(\"brand_programs\".\"display_name\") between 1 and 100"
+        },
+        "chk_brand_programs_tiered_single_threshold": {
+          "name": "chk_brand_programs_tiered_single_threshold",
+          "value": "not (\"brand_programs\".\"program_type\" = 'tiered' and \"brand_programs\".\"exchange_threshold\" is not null)"
+        },
+        "chk_brand_programs_min_store_scope": {
+          "name": "chk_brand_programs_min_store_scope",
+          "value": "\"brand_programs\".\"min_store_count\" is null or \"brand_programs\".\"program_type\" = 'store_conditional'"
+        },
+        "chk_brand_programs_threshold_range": {
+          "name": "chk_brand_programs_threshold_range",
+          "value": "\"brand_programs\".\"exchange_threshold\" is null or \"brand_programs\".\"exchange_threshold\" between 1 and 999999"
+        },
+        "chk_brand_programs_min_store_range": {
+          "name": "chk_brand_programs_min_store_range",
+          "value": "\"brand_programs\".\"min_store_count\" is null or \"brand_programs\".\"min_store_count\" >= 1"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.brands": {
+      "name": "brands",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_order": {
+          "name": "display_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reference_status": {
+          "name": "reference_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'confirmed'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_brands_display_order": {
+          "name": "ix_brands_display_order",
+          "columns": [
+            {
+              "expression": "display_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_brands_display_name": {
+          "name": "uq_brands_display_name",
+          "nullsNotDistinct": false,
+          "columns": [
+            "display_name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_brands_reference_status": {
+          "name": "chk_brands_reference_status",
+          "value": "\"brands\".\"reference_status\" in ('confirmed', 'unconfirmed', 'suspended')"
+        },
+        "chk_brands_display_name_len": {
+          "name": "chk_brands_display_name_len",
+          "value": "char_length(\"brands\".\"display_name\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.coupon_store_snapshot_entries": {
+      "name": "coupon_store_snapshot_entries",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "coupon_id": {
+          "name": "coupon_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "store_id": {
+          "name": "store_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "store_name_raw": {
+          "name": "store_name_raw",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "preserved_quantity": {
+          "name": "preserved_quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_quantity": {
+          "name": "required_quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "uq_coupon_snapshot_entries_store_id": {
+          "name": "uq_coupon_snapshot_entries_store_id",
+          "columns": [
+            {
+              "expression": "coupon_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"coupon_store_snapshot_entries\".\"store_id\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_coupon_snapshot_entries_store_name": {
+          "name": "uq_coupon_snapshot_entries_store_name",
+          "columns": [
+            {
+              "expression": "coupon_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_name_raw",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"coupon_store_snapshot_entries\".\"store_name_raw\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "coupon_store_snapshot_entries_coupon_id_coupon_store_snapshots_coupon_id_fk": {
+          "name": "coupon_store_snapshot_entries_coupon_id_coupon_store_snapshots_coupon_id_fk",
+          "tableFrom": "coupon_store_snapshot_entries",
+          "tableTo": "coupon_store_snapshots",
+          "columnsFrom": [
+            "coupon_id"
+          ],
+          "columnsTo": [
+            "coupon_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "coupon_store_snapshot_entries_store_id_stores_id_fk": {
+          "name": "coupon_store_snapshot_entries_store_id_stores_id_fk",
+          "tableFrom": "coupon_store_snapshot_entries",
+          "tableTo": "stores",
+          "columnsFrom": [
+            "store_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "chk_coupon_snapshot_entries_preserved": {
+          "name": "chk_coupon_snapshot_entries_preserved",
+          "value": "\"coupon_store_snapshot_entries\".\"preserved_quantity\" between 0 and 999999"
+        },
+        "chk_coupon_snapshot_entries_required": {
+          "name": "chk_coupon_snapshot_entries_required",
+          "value": "\"coupon_store_snapshot_entries\".\"required_quantity\" >= 1"
+        },
+        "chk_coupon_snapshot_entries_store_identity": {
+          "name": "chk_coupon_snapshot_entries_store_identity",
+          "value": "num_nonnulls(\"coupon_store_snapshot_entries\".\"store_id\", \"coupon_store_snapshot_entries\".\"store_name_raw\") = 1"
+        },
+        "chk_coupon_snapshot_entries_store_name_len": {
+          "name": "chk_coupon_snapshot_entries_store_name_len",
+          "value": "\"coupon_store_snapshot_entries\".\"store_name_raw\" is null or char_length(\"coupon_store_snapshot_entries\".\"store_name_raw\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.coupon_store_snapshots": {
+      "name": "coupon_store_snapshots",
+      "schema": "",
+      "columns": {
+        "coupon_id": {
+          "name": "coupon_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "captured_at": {
+          "name": "captured_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "source_stamp_balance_id": {
+          "name": "source_stamp_balance_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "list_completeness": {
+          "name": "list_completeness",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'partial'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "coupon_store_snapshots_user_id_users_id_fk": {
+          "name": "coupon_store_snapshots_user_id_users_id_fk",
+          "tableFrom": "coupon_store_snapshots",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "coupon_store_snapshots_source_stamp_balance_id_stamp_balances_id_fk": {
+          "name": "coupon_store_snapshots_source_stamp_balance_id_stamp_balances_id_fk",
+          "tableFrom": "coupon_store_snapshots",
+          "tableTo": "stamp_balances",
+          "columnsFrom": [
+            "source_stamp_balance_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "fk_coupon_store_snapshots_coupon": {
+          "name": "fk_coupon_store_snapshots_coupon",
+          "tableFrom": "coupon_store_snapshots",
+          "tableTo": "coupons",
+          "columnsFrom": [
+            "coupon_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "chk_coupon_store_snapshots_completeness": {
+          "name": "chk_coupon_store_snapshots_completeness",
+          "value": "\"coupon_store_snapshots\".\"list_completeness\" in ('complete', 'partial', 'unknown')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.coupons": {
+      "name": "coupons",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brand_id": {
+          "name": "brand_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brand_program_id": {
+          "name": "brand_program_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "coupon_kind": {
+          "name": "coupon_kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lifecycle": {
+          "name": "lifecycle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'held'"
+        },
+        "issued_at": {
+          "name": "issued_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "usable_from": {
+          "name": "usable_from",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "usable_from_precision": {
+          "name": "usable_from_precision",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expires_on": {
+          "name": "expires_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date_trust": {
+          "name": "date_trust",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'unknown'"
+        },
+        "used_at": {
+          "name": "used_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "condition_note": {
+          "name": "condition_note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source_stamp_event_id": {
+          "name": "source_stamp_event_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_coupons_user_lifecycle": {
+          "name": "ix_coupons_user_lifecycle",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "lifecycle",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"coupons\".\"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_coupons_user_expiry": {
+          "name": "ix_coupons_user_expiry",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "expires_on",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"coupons\".\"deleted_at\" is null and \"coupons\".\"lifecycle\" = 'held'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_coupons_source_event": {
+          "name": "ix_coupons_source_event",
+          "columns": [
+            {
+              "expression": "source_stamp_event_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_coupons_deleted": {
+          "name": "ix_coupons_deleted",
+          "columns": [
+            {
+              "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"coupons\".\"deleted_at\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "coupons_user_id_users_id_fk": {
+          "name": "coupons_user_id_users_id_fk",
+          "tableFrom": "coupons",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "coupons_brand_id_brands_id_fk": {
+          "name": "coupons_brand_id_brands_id_fk",
+          "tableFrom": "coupons",
+          "tableTo": "brands",
+          "columnsFrom": [
+            "brand_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "coupons_brand_program_id_brand_programs_id_fk": {
+          "name": "coupons_brand_program_id_brand_programs_id_fk",
+          "tableFrom": "coupons",
+          "tableTo": "brand_programs",
+          "columnsFrom": [
+            "brand_program_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_coupons_id_user": {
+          "name": "uq_coupons_id_user",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_coupons_coupon_kind": {
+          "name": "chk_coupons_coupon_kind",
+          "value": "\"coupons\".\"coupon_kind\" in ('stamp', 'event_other', 'unknown')"
+        },
+        "chk_coupons_lifecycle": {
+          "name": "chk_coupons_lifecycle",
+          "value": "\"coupons\".\"lifecycle\" in ('held', 'used', 'expired', 'conversion_cancelled')"
+        },
+        "chk_coupons_date_trust_value": {
+          "name": "chk_coupons_date_trust_value",
+          "value": "\"coupons\".\"date_trust\" in ('confirmed', 'estimated', 'unknown', 'no_limit')"
+        },
+        "chk_coupons_usable_from_precision": {
+          "name": "chk_coupons_usable_from_precision",
+          "value": "\"coupons\".\"usable_from_precision\" in ('date', 'minute')"
+        },
+        "chk_coupons_name_len": {
+          "name": "chk_coupons_name_len",
+          "value": "char_length(\"coupons\".\"name\") between 1 and 100"
+        },
+        "chk_coupons_condition_note_len": {
+          "name": "chk_coupons_condition_note_len",
+          "value": "\"coupons\".\"condition_note\" is null or char_length(\"coupons\".\"condition_note\") <= 2000"
+        },
+        "chk_coupons_date_trust": {
+          "name": "chk_coupons_date_trust",
+          "value": "(\"coupons\".\"date_trust\" in ('confirmed', 'estimated')) = (\"coupons\".\"expires_on\" is not null)"
+        },
+        "chk_coupons_usable_precision": {
+          "name": "chk_coupons_usable_precision",
+          "value": "(\"coupons\".\"usable_from\" is null) = (\"coupons\".\"usable_from_precision\" is null)"
+        },
+        "chk_coupons_used_at": {
+          "name": "chk_coupons_used_at",
+          "value": "(\"coupons\".\"lifecycle\" = 'used') = (\"coupons\".\"used_at\" is not null)"
+        },
+        "chk_coupons_usable_before_expiry": {
+          "name": "chk_coupons_usable_before_expiry",
+          "value": "\"coupons\".\"usable_from\" is null or \"coupons\".\"expires_on\" is null or (\"coupons\".\"usable_from\" at time zone 'Asia/Seoul')::date <= \"coupons\".\"expires_on\""
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.saved_places": {
+      "name": "saved_places",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "numeric(10, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_order": {
+          "name": "display_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "saved_places_user_id_users_id_fk": {
+          "name": "saved_places_user_id_users_id_fk",
+          "tableFrom": "saved_places",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_saved_places_user_slot": {
+          "name": "uq_saved_places_user_slot",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id",
+            "display_order"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_saved_places_name_len": {
+          "name": "chk_saved_places_name_len",
+          "value": "char_length(\"saved_places\".\"name\") between 1 and 100"
+        },
+        "chk_saved_places_slot_range": {
+          "name": "chk_saved_places_slot_range",
+          "value": "\"saved_places\".\"display_order\" between 1 and 10"
+        },
+        "chk_saved_places_latitude": {
+          "name": "chk_saved_places_latitude",
+          "value": "\"saved_places\".\"latitude\" between -90 and 90"
+        },
+        "chk_saved_places_longitude": {
+          "name": "chk_saved_places_longitude",
+          "value": "\"saved_places\".\"longitude\" between -180 and 180"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.stamp_balance_store_counts": {
+      "name": "stamp_balance_store_counts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "stamp_balance_id": {
+          "name": "stamp_balance_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "store_id": {
+          "name": "store_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "store_name_raw": {
+          "name": "store_name_raw",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "uq_balance_store_counts_store_id": {
+          "name": "uq_balance_store_counts_store_id",
+          "columns": [
+            {
+              "expression": "stamp_balance_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balance_store_counts\".\"store_id\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_balance_store_counts_store_name": {
+          "name": "uq_balance_store_counts_store_name",
+          "columns": [
+            {
+              "expression": "stamp_balance_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_name_raw",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balance_store_counts\".\"store_name_raw\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "stamp_balance_store_counts_user_id_users_id_fk": {
+          "name": "stamp_balance_store_counts_user_id_users_id_fk",
+          "tableFrom": "stamp_balance_store_counts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "stamp_balance_store_counts_store_id_stores_id_fk": {
+          "name": "stamp_balance_store_counts_store_id_stores_id_fk",
+          "tableFrom": "stamp_balance_store_counts",
+          "tableTo": "stores",
+          "columnsFrom": [
+            "store_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_balance_store_counts_balance": {
+          "name": "fk_balance_store_counts_balance",
+          "tableFrom": "stamp_balance_store_counts",
+          "tableTo": "stamp_balances",
+          "columnsFrom": [
+            "stamp_balance_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "chk_balance_store_counts_quantity": {
+          "name": "chk_balance_store_counts_quantity",
+          "value": "\"stamp_balance_store_counts\".\"quantity\" between 0 and 999999"
+        },
+        "chk_balance_store_counts_store_identity": {
+          "name": "chk_balance_store_counts_store_identity",
+          "value": "num_nonnulls(\"stamp_balance_store_counts\".\"store_id\", \"stamp_balance_store_counts\".\"store_name_raw\") = 1"
+        },
+        "chk_balance_store_counts_store_name_len": {
+          "name": "chk_balance_store_counts_store_name_len",
+          "value": "\"stamp_balance_store_counts\".\"store_name_raw\" is null or char_length(\"stamp_balance_store_counts\".\"store_name_raw\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.stamp_balances": {
+      "name": "stamp_balances",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brand_id": {
+          "name": "brand_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brand_program_id": {
+          "name": "brand_program_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "purpose": {
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "accrual_scope": {
+          "name": "accrual_scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "store_id": {
+          "name": "store_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "store_name_raw": {
+          "name": "store_name_raw",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "unidentified_key": {
+          "name": "unidentified_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_quantity": {
+          "name": "current_quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "official_quantity": {
+          "name": "official_quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "official_checked_at": {
+          "name": "official_checked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "composition_status": {
+          "name": "composition_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'valid'"
+        },
+        "composition_checked_at": {
+          "name": "composition_checked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "uq_stamp_balance_unit_no_store": {
+          "name": "uq_stamp_balance_unit_no_store",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_program_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "purpose",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "accrual_scope",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balances\".\"deleted_at\" is null and \"stamp_balances\".\"brand_program_id\" is not null and \"stamp_balances\".\"purpose\" is not null and \"stamp_balances\".\"accrual_scope\" <> 'unknown' and \"stamp_balances\".\"store_id\" is null and \"stamp_balances\".\"store_name_raw\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_stamp_balance_unit_store_id": {
+          "name": "uq_stamp_balance_unit_store_id",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_program_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "purpose",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "accrual_scope",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balances\".\"deleted_at\" is null and \"stamp_balances\".\"brand_program_id\" is not null and \"stamp_balances\".\"purpose\" is not null and \"stamp_balances\".\"accrual_scope\" <> 'unknown' and \"stamp_balances\".\"store_id\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_stamp_balance_unit_store_name": {
+          "name": "uq_stamp_balance_unit_store_name",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_program_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "purpose",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "accrual_scope",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "store_name_raw",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balances\".\"deleted_at\" is null and \"stamp_balances\".\"brand_program_id\" is not null and \"stamp_balances\".\"purpose\" is not null and \"stamp_balances\".\"accrual_scope\" <> 'unknown' and \"stamp_balances\".\"store_name_raw\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_stamp_balance_unidentified": {
+          "name": "uq_stamp_balance_unidentified",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "unidentified_key",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_balances\".\"deleted_at\" is null and \"stamp_balances\".\"unidentified_key\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_balances_user": {
+          "name": "ix_stamp_balances_user",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"stamp_balances\".\"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_balances_user_brand": {
+          "name": "ix_stamp_balances_user_brand",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"stamp_balances\".\"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_balances_deleted": {
+          "name": "ix_stamp_balances_deleted",
+          "columns": [
+            {
+              "expression": "deleted_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"stamp_balances\".\"deleted_at\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "stamp_balances_user_id_users_id_fk": {
+          "name": "stamp_balances_user_id_users_id_fk",
+          "tableFrom": "stamp_balances",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "stamp_balances_brand_id_brands_id_fk": {
+          "name": "stamp_balances_brand_id_brands_id_fk",
+          "tableFrom": "stamp_balances",
+          "tableTo": "brands",
+          "columnsFrom": [
+            "brand_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "stamp_balances_brand_program_id_brand_programs_id_fk": {
+          "name": "stamp_balances_brand_program_id_brand_programs_id_fk",
+          "tableFrom": "stamp_balances",
+          "tableTo": "brand_programs",
+          "columnsFrom": [
+            "brand_program_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "stamp_balances_store_id_stores_id_fk": {
+          "name": "stamp_balances_store_id_stores_id_fk",
+          "tableFrom": "stamp_balances",
+          "tableTo": "stores",
+          "columnsFrom": [
+            "store_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_stamp_balances_id_user": {
+          "name": "uq_stamp_balances_id_user",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_stamp_balances_accrual_scope": {
+          "name": "chk_stamp_balances_accrual_scope",
+          "value": "\"stamp_balances\".\"accrual_scope\" in ('common', 'store', 'unknown')"
+        },
+        "chk_stamp_balances_composition_status": {
+          "name": "chk_stamp_balances_composition_status",
+          "value": "\"stamp_balances\".\"composition_status\" in ('valid', 'needs_check')"
+        },
+        "chk_stamp_balances_current_quantity": {
+          "name": "chk_stamp_balances_current_quantity",
+          "value": "\"stamp_balances\".\"current_quantity\" between 0 and 999999"
+        },
+        "chk_stamp_balances_official_quantity": {
+          "name": "chk_stamp_balances_official_quantity",
+          "value": "\"stamp_balances\".\"official_quantity\" is null or \"stamp_balances\".\"official_quantity\" between 0 and 999999"
+        },
+        "chk_stamp_balances_official_pair": {
+          "name": "chk_stamp_balances_official_pair",
+          "value": "(\"stamp_balances\".\"official_quantity\" is null) = (\"stamp_balances\".\"official_checked_at\" is null)"
+        },
+        "chk_stamp_balances_store_identity": {
+          "name": "chk_stamp_balances_store_identity",
+          "value": "num_nonnulls(\"stamp_balances\".\"store_id\", \"stamp_balances\".\"store_name_raw\") <= 1"
+        },
+        "chk_stamp_balances_store_scope": {
+          "name": "chk_stamp_balances_store_scope",
+          "value": "(\"stamp_balances\".\"store_id\" is null and \"stamp_balances\".\"store_name_raw\" is null) or \"stamp_balances\".\"accrual_scope\" = 'store'"
+        },
+        "chk_stamp_balances_unidentified_key": {
+          "name": "chk_stamp_balances_unidentified_key",
+          "value": "(\"stamp_balances\".\"brand_program_id\" is not null and \"stamp_balances\".\"purpose\" is not null and \"stamp_balances\".\"accrual_scope\" <> 'unknown') or \"stamp_balances\".\"unidentified_key\" is not null"
+        },
+        "chk_stamp_balances_store_name_len": {
+          "name": "chk_stamp_balances_store_name_len",
+          "value": "\"stamp_balances\".\"store_name_raw\" is null or char_length(\"stamp_balances\".\"store_name_raw\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.stamp_events": {
+      "name": "stamp_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stamp_balance_id": {
+          "name": "stamp_balance_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "event_type": {
+          "name": "event_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantity_delta": {
+          "name": "quantity_delta",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quantity_before": {
+          "name": "quantity_before",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quantity_after": {
+          "name": "quantity_after",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "target_version": {
+          "name": "target_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occurred_at": {
+          "name": "occurred_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recorded_at": {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "store_id": {
+          "name": "store_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "store_name_raw": {
+          "name": "store_name_raw",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "applied_via": {
+          "name": "applied_via",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tier_threshold": {
+          "name": "tier_threshold",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "request_id": {
+          "name": "request_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "uq_stamp_events_request": {
+          "name": "uq_stamp_events_request",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "request_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_events\".\"request_id\" is not null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_stamp_events_initial_import": {
+          "name": "uq_stamp_events_initial_import",
+          "columns": [
+            {
+              "expression": "stamp_balance_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"stamp_events\".\"event_type\" = 'initial_import' and \"stamp_events\".\"deleted_at\" is null",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_events_balance_time": {
+          "name": "ix_stamp_events_balance_time",
+          "columns": [
+            {
+              "expression": "stamp_balance_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_events_user_time": {
+          "name": "ix_stamp_events_user_time",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stamp_events_recorded": {
+          "name": "ix_stamp_events_recorded",
+          "columns": [
+            {
+              "expression": "recorded_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "stamp_events_user_id_users_id_fk": {
+          "name": "stamp_events_user_id_users_id_fk",
+          "tableFrom": "stamp_events",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "stamp_events_store_id_stores_id_fk": {
+          "name": "stamp_events_store_id_stores_id_fk",
+          "tableFrom": "stamp_events",
+          "tableTo": "stores",
+          "columnsFrom": [
+            "store_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_stamp_events_balance": {
+          "name": "fk_stamp_events_balance",
+          "tableFrom": "stamp_events",
+          "tableTo": "stamp_balances",
+          "columnsFrom": [
+            "stamp_balance_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "id",
+            "user_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_stamp_events_id_user": {
+          "name": "uq_stamp_events_id_user",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "user_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_stamp_events_event_type": {
+          "name": "chk_stamp_events_event_type",
+          "value": "\"stamp_events\".\"event_type\" in ('initial_import', 'accrual_added', 'balance_set', 'official_confirmed', 'expired', 'expiry_restored', 'converted', 'conversion_cancelled', 'deleted', 'restored')"
+        },
+        "chk_stamp_events_applied_via": {
+          "name": "chk_stamp_events_applied_via",
+          "value": "\"stamp_events\".\"applied_via\" in ('direct', 'already_reflected', 'balance_reconciled')"
+        },
+        "chk_stamp_events_quantity_before": {
+          "name": "chk_stamp_events_quantity_before",
+          "value": "\"stamp_events\".\"quantity_before\" is null or \"stamp_events\".\"quantity_before\" between 0 and 999999"
+        },
+        "chk_stamp_events_quantity_after": {
+          "name": "chk_stamp_events_quantity_after",
+          "value": "\"stamp_events\".\"quantity_after\" is null or \"stamp_events\".\"quantity_after\" between 0 and 999999"
+        },
+        "chk_stamp_events_store_identity": {
+          "name": "chk_stamp_events_store_identity",
+          "value": "num_nonnulls(\"stamp_events\".\"store_id\", \"stamp_events\".\"store_name_raw\") <= 1"
+        },
+        "chk_stamp_events_note_len": {
+          "name": "chk_stamp_events_note_len",
+          "value": "\"stamp_events\".\"note\" is null or char_length(\"stamp_events\".\"note\") <= 2000"
+        },
+        "chk_stamp_events_store_name_len": {
+          "name": "chk_stamp_events_store_name_len",
+          "value": "\"stamp_events\".\"store_name_raw\" is null or char_length(\"stamp_events\".\"store_name_raw\") between 1 and 100"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.stores": {
+      "name": "stores",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "brand_id": {
+          "name": "brand_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "brand_program_id": {
+          "name": "brand_program_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "numeric(10, 6)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "map_provider": {
+          "name": "map_provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provider_place_id": {
+          "name": "provider_place_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "store_status": {
+          "name": "store_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fetched_at": {
+          "name": "fetched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "previous_store_id": {
+          "name": "previous_store_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_stores_brand_program": {
+          "name": "ix_stores_brand_program",
+          "columns": [
+            {
+              "expression": "brand_program_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_stores_brand": {
+          "name": "ix_stores_brand",
+          "columns": [
+            {
+              "expression": "brand_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "stores_brand_id_brands_id_fk": {
+          "name": "stores_brand_id_brands_id_fk",
+          "tableFrom": "stores",
+          "tableTo": "brands",
+          "columnsFrom": [
+            "brand_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "stores_brand_program_id_brand_programs_id_fk": {
+          "name": "stores_brand_program_id_brand_programs_id_fk",
+          "tableFrom": "stores",
+          "tableTo": "brand_programs",
+          "columnsFrom": [
+            "brand_program_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "stores_previous_store_id_stores_id_fk": {
+          "name": "stores_previous_store_id_stores_id_fk",
+          "tableFrom": "stores",
+          "tableTo": "stores",
+          "columnsFrom": [
+            "previous_store_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "uq_stores_provider_place": {
+          "name": "uq_stores_provider_place",
+          "nullsNotDistinct": false,
+          "columns": [
+            "map_provider",
+            "provider_place_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "chk_stores_store_status": {
+          "name": "chk_stores_store_status",
+          "value": "\"stores\".\"store_status\" in ('active', 'closed_confirmed', 'needs_check')"
+        },
+        "chk_stores_name_len": {
+          "name": "chk_stores_name_len",
+          "value": "char_length(\"stores\".\"name\") between 1 and 100"
+        },
+        "chk_stores_latitude": {
+          "name": "chk_stores_latitude",
+          "value": "\"stores\".\"latitude\" is null or \"stores\".\"latitude\" between -90 and 90"
+        },
+        "chk_stores_longitude": {
+          "name": "chk_stores_longitude",
+          "value": "\"stores\".\"longitude\" is null or \"stores\".\"longitude\" between -180 and 180"
+        },
+        "chk_stores_coords_paired": {
+          "name": "chk_stores_coords_paired",
+          "value": "(\"stores\".\"latitude\" is null) = (\"stores\".\"longitude\" is null)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuidv7()"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "joined_at": {
+          "name": "joined_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "withdrawal_requested_at": {
+          "name": "withdrawal_requested_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "chk_users_status": {
+          "name": "chk_users_status",
+          "value": "\"users\".\"status\" in ('active', 'withdrawing')"
+        },
+        "chk_users_withdrawal_consistency": {
+          "name": "chk_users_withdrawal_consistency",
+          "value": "(\"users\".\"status\" = 'withdrawing') = (\"users\".\"withdrawal_requested_at\" is not null)"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

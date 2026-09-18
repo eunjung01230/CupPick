@@ -1,7 +1,7 @@
 import { auth, signIn, signOut } from "@/auth.ts";
 
 /**
- * Google 로그인 검증용 최소 화면이다. 디자인 대상이 아니며 로그인 여부와
+ * 소셜 로그인 검증용 최소 화면이다. 디자인 대상이 아니며 로그인 여부와
  * provider 식별값만 확인한다.
  */
 export default async function HomePage() {
@@ -18,6 +18,22 @@ export default async function HomePage() {
           }}
         >
           <button type="submit">Google로 로그인</button>
+        </form>
+        <form
+          action={async () => {
+            "use server";
+            await signIn("kakao");
+          }}
+        >
+          <button type="submit">Kakao로 로그인</button>
+        </form>
+        <form
+          action={async () => {
+            "use server";
+            await signIn("naver");
+          }}
+        >
+          <button type="submit">Naver로 로그인</button>
         </form>
       </main>
     );
