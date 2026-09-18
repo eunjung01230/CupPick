@@ -45,6 +45,7 @@ export default async function HomePage() {
       <p>로그인 상태: 로그인됨</p>
       <p>authProvider: {session.authProvider ?? "(없음)"}</p>
       <p>providerSubject: {session.providerSubject ?? "(없음)"}</p>
+      <p>userId: {session.user.id ?? "(없음)"}</p>
       <p>name: {session.user.name ?? "(없음)"}</p>
       <form
         action={async () => {
