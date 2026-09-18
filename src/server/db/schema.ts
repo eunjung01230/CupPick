@@ -2,8 +2,8 @@
  * CupPick 물리 스키마.
  *
  * 기준 문서
- * - docs/06-data.md v1.3 (D01~D22 논리 명세)
- * - docs/05-policy.md v1.3 (POL01~POL26)
+ * - docs/06-data.md v1.4 (D01~D22 논리 명세)
+ * - docs/05-policy.md v1.4 (POL01~POL26)
  * - docs/04-features.md v1.4 (F01~F35)
  * - docs/design/cuppick -v2/CupPick v2.dc.html (최종 디자인, 최우선)
  *
@@ -79,7 +79,7 @@ export const PROGRAM_TYPE = ["cumulative", "store_conditional", "tiered"] as con
 /** 06 D06 매장 정보 상태 */
 export const STORE_STATUS = ["active", "closed_confirmed", "needs_check"] as const;
 
-/** 05 POL02.2 제공자별 계정 */
+/** 05 POL02.2 제공자별 계정. auth_accounts.auth_provider의 값 집합이다. */
 export const AUTH_PROVIDER = ["google", "naver", "kakao"] as const;
 
 /** 06 D01 계정 상태 */
@@ -288,17 +288,20 @@ export const stores = pgTable(
   ],
 );
 
-/* ──────────────────────────── 계정 (D01 · D03) ──────────────────────────── */
+/* ──────────────────── 계정 · 인증 (D01 · D03) ──────────────────── */
 
 /**
- * D01 사용자 계정.
+ * D01 사용자 계정. CupPick 사용자 본체다.
  *
- * email · 이름 · 프로필 이미지를 저장하지 않는다.
- * POL02.2 "같은 이메일로 병합하지 않는다", 06 §3 D01 "이메일을 병합키로 쓰지 않음",
- * "불필요한 프로필은 저장하지 않는다". 모든 개인 데이터의 FK는 이 표의 uuid를 가리킨다.
- *
- * Better Auth 도입 시에는 인증 테이블을 별도로 두고 여기에 링크 컬럼 하나만 추가한다.
+ * 인증 수단은 이 표에 두지 않는다. 06 §3 D01이 소셜 로그인 계정을 자식행으로
+ * 분리했고, auth_accounts가 그 자식행이다. 이름 · 프로필 이미지는 저장하지 않는다
+ * ("불필요한 프로필은 저장하지 않는다"). 모든 개인 데이터의 FK는 이 표의 uuid를
+ * 가리키며, 인증 구현을 바꿔도 이 id는 그대로 두고 auth_accounts만 교체한다.
  * 도메인 FK가 인증 구현을 가리키지 않게 유지한다.
+ *
+ * 06 §3 D01의 "인증한 휴대폰 번호·인증 시각"은 지금 열로 만들지 않는다. 같은 칸이
+ * "현재 범위에서는 만들지 않음(POL02.5)"이라고 적고 있고, POL02.5가 휴대폰
+ * 본인인증과 계정 연결을 모두 범위 밖으로 둔다. 해당 기능을 구현할 때 추가한다.
  *
  * 운영 삭제 기한은 컬럼이 아니다. withdrawal_requested_at + 24시간으로 파생된다(D01).
  * 탈퇴는 60일 휴지통 대상이 아니다(POL22.4).
@@ -309,21 +312,54 @@ export const users = pgTable(
     id: uuid("id")
       .primaryKey()
       .default(sql`uuidv7()`),
-    authProvider: text("auth_provider", { enum: AUTH_PROVIDER }).notNull(),
-    providerSubject: text("provider_subject").notNull(),
     status: text("status", { enum: USER_STATUS }).notNull().default("active"),
     joinedAt: timestamp("joined_at", { withTimezone: true }).notNull().defaultNow(),
     withdrawalRequestedAt: timestamp("withdrawal_requested_at", { withTimezone: true }),
     ...timestamps,
   },
   (t) => [
-    unique("uq_users_provider_subject").on(t.authProvider, t.providerSubject),
-    check("chk_users_auth_provider", inList(t.authProvider, AUTH_PROVIDER)),
     check("chk_users_status", inList(t.status, USER_STATUS)),
     check(
       "chk_users_withdrawal_consistency",
       sql`(${t.status} = 'withdrawing') = (${t.withdrawalRequestedAt} is not null)`,
     ),
+  ],
+);
+
+/**
+ * D01 소셜 로그인 계정. 사용자 1명에 여러 행이 올 수 있는 자식행이다.
+ *
+ * 06 §5.12: (auth_provider, provider_subject)는 전체에서 고유하며 한 사용자에게만
+ * 속한다. 로그인은 이 조합으로만 사용자를 찾는다.
+ *
+ * 현재 범위는 로그인마다 사용자 1명 + 이 표 1행을 만들고 기존 사용자에 행을 더하지
+ * 않는다(06 §3 D01 수명·경계). 여러 행을 두는 것은 POL02.5의 연결 조건(사용자가
+ * 직접 마친 휴대폰 본인인증 + 같은 인증 번호)을 만족할 때뿐이며 아직 구현하지 않는다.
+ *
+ * provider_email은 표시·문의 참고용이다. UNIQUE를 걸지 않으며 이 열로 사용자를
+ * 찾거나 계정을 합치지 않는다. POL02.2 "이메일은 병합 키가 아니다".
+ *
+ * 탈퇴하면 자식행도 함께 사라진다(06 §3 D01 "계정 삭제 시 함께 제거").
+ */
+export const authAccounts = pgTable(
+  "auth_accounts",
+  {
+    id: uuid("id")
+      .primaryKey()
+      .default(sql`uuidv7()`),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    authProvider: text("auth_provider", { enum: AUTH_PROVIDER }).notNull(),
+    providerSubject: text("provider_subject").notNull(),
+    providerEmail: text("provider_email"),
+    ...timestamps,
+  },
+  (t) => [
+    unique("uq_auth_accounts_provider_subject").on(t.authProvider, t.providerSubject),
+    /** 유니크가 (provider, subject)로 시작하므로 탈퇴 cascade용 user_id 색인이 따로 필요하다. */
+    index("ix_auth_accounts_user").on(t.userId),
+    check("chk_auth_accounts_provider", inList(t.authProvider, AUTH_PROVIDER)),
   ],
 );
 
