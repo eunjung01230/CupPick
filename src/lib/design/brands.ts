@@ -92,5 +92,5 @@ export function programLabel(brandId: string, program: ProgramKey | null): strin
 export function programGoal(brandId: string, program: ProgramKey | null): number {
   const meta = programMeta(brandId, program);
   if (!meta) return 0;
-  return meta.tiers ? meta.tiers[meta.tiers.length - 1] : meta.goal;
+  return "tiers" in meta && meta.tiers ? meta.tiers[meta.tiers.length - 1] : meta.goal;
 }

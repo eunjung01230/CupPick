@@ -232,7 +232,7 @@ export function benefitCards(data: BenefitData, sort: "expiry" | "pref"): Benefi
     for (const balance of units) {
       const program = balance?.programKey ?? null;
       const programInfo = programMeta(brandId, program);
-      const tiers = programInfo?.type === "tier" ? programInfo.tiers : null;
+      const tiers = programInfo && "tiers" in programInfo && programInfo.type === "tier" ? (programInfo.tiers ?? null) : null;
       const goal = programGoal(brandId, program);
       const qty = balance?.qty ?? 0;
 
