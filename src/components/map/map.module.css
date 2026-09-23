@@ -1,0 +1,478 @@
+/*
+ * 지도(홈) 화면 스타일.
+ *
+ * 값 출처는 docs/design/cuppick -v2/CupPick v2.dc.html 의 vMap 영역이다.
+ * 공통 조각(헤더·탭·시트·pill)은 src/components/app/shell.module.css 에 있다.
+ */
+
+/* ── 게스트 배너 ── */
+
+.guestBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--gradient-guest);
+}
+
+.guestDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+
+.guestText {
+  flex: 1;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(245, 230, 200, 0.88);
+}
+
+/* ── 조회 위치 ── */
+
+.locationBar {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 11px 16px 10px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchField {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px 9px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+}
+
+.searchIcon {
+  flex: none;
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: var(--color-foreground);
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.searchSubmit {
+  flex: none;
+  white-space: nowrap;
+  min-height: 32px;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gradient-cta);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gpsButton {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+  color: var(--color-primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.gpsButtonActive {
+  border: 0;
+  background: var(--gradient-cta);
+  color: #fff;
+}
+
+.locationNotice {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--color-muted-foreground);
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.presetLabel {
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted-foreground);
+}
+
+/* ── 지도 영역 (Naver Map 연결 전 placeholder) ── */
+
+.map {
+  position: relative;
+  height: 390px;
+  overflow: hidden;
+  background: linear-gradient(170deg, #eae6e0, #dbd5cc 55%, #cec8be);
+}
+
+.mapGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(168, 159, 151, 0.4) 0 0.6px, transparent 0.6px 36px),
+    repeating-linear-gradient(90deg, rgba(168, 159, 151, 0.4) 0 0.6px, transparent 0.6px 36px);
+}
+
+.mapUserDot {
+  position: absolute;
+  left: 47%;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 0 7px rgba(59, 130, 246, 0.18);
+}
+
+.mapPin {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: translate(-50%, -100%);
+}
+
+.mapPinButton {
+  cursor: pointer;
+}
+
+.pinBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 2px solid #fff;
+  border-radius: 13px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.pinBadgeDense {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  font-size: 11px;
+}
+
+.pinLabel {
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.mapLocaleBadge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  white-space: nowrap;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.mapZoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.zoomButton {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.zoomButton:disabled {
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+
+.mapControls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.mapControlRow {
+  display: flex;
+  gap: 6px;
+}
+
+/* 지도 미연결 표시. 개발 중에만 그린다. */
+.mapPendingNote {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(28, 20, 16, 0.62);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* ── 필터 바 ── */
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.filterCount {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+/* ── 브랜드 카드 목록 ── */
+
+.cardList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px 20px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.cardTitle {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardName {
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cardNear {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.lockNote {
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+.stampPill {
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.summaryPill {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.summaryDot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.toggleButton {
+  width: 100%;
+  min-height: 40px;
+  padding: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storeList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.storeRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  background: var(--color-background);
+}
+
+.storeTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.storeTitle {
+  flex: 1;
+  min-width: 0;
+}
+
+.storeName {
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.storeWalk {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: var(--color-foreground);
+}
+
+.storeBasis {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--color-muted-foreground);
+}
+
+.directionsButton {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid rgba(200, 119, 58, 0.35);
+  border-radius: 11px;
+  background: rgba(200, 119, 58, 0.08);
+  color: var(--color-accent);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.emptyState {
+  margin: 0;
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+}
+
+.registerCta {
+  min-height: 50px;
+  padding: 14px;
+  border: 2px dashed rgba(200, 119, 58, 0.4);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}

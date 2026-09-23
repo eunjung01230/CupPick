@@ -1,0 +1,692 @@
+/*
+ * 홈(지도) 화면 스타일.
+ *
+ * 값 출처는 docs/design/cuppick -v2/CupPick v2.dc.html 의 지도 화면이다.
+ * 색은 src/app/globals.css 의 토큰을 쓰고, 디자인에 없는 색을 새로 만들지 않는다.
+ */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--color-background);
+}
+
+/* 데스크톱에서는 모바일 폭을 유지하고 양옆에 경계만 둔다. */
+@media (min-width: 520px) {
+  .screen {
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+  }
+}
+
+/* ── 헤더 ── */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px 11px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.brandMark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--gradient-mark);
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-mark-foreground);
+  padding-bottom: 2px;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: -0.2px;
+}
+
+.headerAction {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid rgba(200, 119, 58, 0.25);
+  border-radius: 999px;
+  background: var(--color-secondary);
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── 게스트 배너 ── */
+
+.guestBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--gradient-guest);
+}
+
+.guestDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fbbf24;
+}
+
+.guestText {
+  flex: 1;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(245, 230, 200, 0.88);
+}
+
+/* ── 조회 위치 ── */
+
+.locationBar {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 11px 16px 10px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchField {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px 9px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+}
+
+.searchIcon {
+  flex: none;
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: var(--color-foreground);
+}
+
+.searchInput::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.searchSubmit {
+  flex: none;
+  white-space: nowrap;
+  min-height: 32px;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gradient-cta);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gpsButton {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+  color: var(--color-primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.gpsButtonActive {
+  border: 0;
+  background: var(--gradient-cta);
+  color: #fff;
+}
+
+.locationNotice {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--color-muted-foreground);
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.presetLabel {
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted-foreground);
+}
+
+/* dc.html pill() */
+.pill {
+  flex: none;
+  white-space: nowrap;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-card);
+  color: var(--color-muted-foreground);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pillActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+/* 누를 수 없는 표시용 pill */
+.pillStatic {
+  cursor: default;
+}
+
+.pillSmall {
+  min-height: 30px;
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
+/* ── 지도 영역 (Naver Map 연결 전 placeholder) ── */
+
+.map {
+  position: relative;
+  height: 390px;
+  overflow: hidden;
+  background: linear-gradient(170deg, #eae6e0, #dbd5cc 55%, #cec8be);
+}
+
+.mapGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(168, 159, 151, 0.4) 0 0.6px, transparent 0.6px 36px),
+    repeating-linear-gradient(90deg, rgba(168, 159, 151, 0.4) 0 0.6px, transparent 0.6px 36px);
+}
+
+.mapUserDot {
+  position: absolute;
+  left: 47%;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 0 7px rgba(59, 130, 246, 0.18);
+}
+
+.mapPin {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: translate(-50%, -100%);
+}
+
+.mapPinButton {
+  cursor: pointer;
+}
+
+.pinBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 2px solid #fff;
+  border-radius: 13px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.pinBadgeDense {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  font-size: 11px;
+}
+
+.pinLabel {
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.mapLocaleBadge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  white-space: nowrap;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.mapZoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.zoomButton {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.zoomButton:disabled {
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+
+.mapControls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.mapControlRow {
+  display: flex;
+  gap: 6px;
+}
+
+/* 지도 미연결 표시. 개발 중에만 그린다. */
+.mapPendingNote {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(28, 20, 16, 0.62);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* ── 필터 바 ── */
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.filterCount {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+/* ── 주변 카페 목록 ── */
+
+.cardList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-card);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.cardMark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cardTitle {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardName {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cardNear {
+  margin: 0;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.lockNote {
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+.summaryPill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--color-secondary);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-muted-foreground);
+}
+
+.summaryDot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.toggleButton {
+  width: 100%;
+  min-height: 40px;
+  padding: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storeList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.storeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  background: var(--color-background);
+}
+
+.storeTitle {
+  flex: 1;
+  min-width: 0;
+}
+
+.storeName {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.storeWalk {
+  margin: 0;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--color-muted-foreground);
+}
+
+.storeWalkKnown {
+  color: var(--color-foreground);
+}
+
+.directionsButton {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 8px 11px;
+  border: 1px solid rgba(200, 119, 58, 0.35);
+  border-radius: 11px;
+  background: rgba(200, 119, 58, 0.08);
+  color: var(--color-accent);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.directionsButton:disabled {
+  border-color: var(--color-border);
+  background: var(--color-secondary);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+
+.emptyState {
+  margin: 0;
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+}
+
+.registerCta {
+  min-height: 50px;
+  padding: 14px;
+  border: 2px dashed rgba(200, 119, 58, 0.4);
+  border-radius: 16px;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── 로그인 유도 시트 ── */
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(10, 6, 4, 0.6);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 88%;
+  overflow: auto;
+  padding: 14px 20px calc(env(safe-area-inset-bottom, 0px) + 32px);
+  border-radius: 24px 24px 0 0;
+  background: var(--color-card);
+  box-shadow: 0 -10px 34px rgba(28, 20, 16, 0.22);
+}
+
+.sheetHandle {
+  flex: none;
+  align-self: center;
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.sheetBody {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+}
+
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 4px;
+}
+
+.socialButton {
+  width: 100%;
+  min-height: 50px;
+  padding: 14px;
+  border: 0;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.socialKakao {
+  background: #fee500;
+  color: #1a1200;
+}
+
+.socialNaver {
+  background: #03c75a;
+  color: #fff;
+}
+
+.socialGoogle {
+  border: 1px solid #dadce0;
+  background: #fff;
+  color: #3c4043;
+}
+
+.sheetDismiss {
+  min-height: 46px;
+  padding: 13px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--color-muted-foreground);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
