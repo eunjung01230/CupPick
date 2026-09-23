@@ -1,0 +1,560 @@
+/*
+ * 화면 공통 스타일.
+ *
+ * 값 출처는 docs/design/cuppick -v2/CupPick v2.dc.html 이며, 그 안의 헬퍼
+ * pill() · opt() · cta() · small() 과 앱 셸·서브 헤더·바텀시트·토스트를 옮겼다.
+ * 색은 src/app/globals.css 토큰을 쓴다. 디자인에 없는 값을 새로 만들지 않는다.
+ */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--color-background);
+}
+
+@media (min-width: 520px) {
+  .screen {
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+  }
+}
+
+/* ── 앱 헤더 ── */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px 11px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.brandMark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding-bottom: 2px;
+  border-radius: 9px;
+  background: var(--gradient-mark);
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-mark-foreground);
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: -0.2px;
+}
+
+.headerAction {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid rgba(200, 119, 58, 0.25);
+  border-radius: 999px;
+  background: var(--color-secondary);
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── 본문 ── */
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* ── 하단 탭 ── */
+
+.bottomNav {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex: none;
+  padding: 0 4px calc(env(safe-area-inset-bottom, 0px) + 10px);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.navItem {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-height: 46px;
+  padding: 10px 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted-foreground);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.navItemActive {
+  color: var(--color-accent);
+}
+
+.navMark {
+  position: relative;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.navBadge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.navLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+/* ── 서브 화면 헤더 ── */
+
+.subHeader {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 14px 12px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.backButton {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-secondary);
+  color: var(--color-foreground);
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.subHeading {
+  flex: 1;
+  min-width: 0;
+}
+
+.subTitle {
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.subSub {
+  overflow: hidden;
+  margin: 1px 0 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: var(--color-muted-foreground);
+}
+
+/* ── 바텀시트 ── */
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(10, 6, 4, 0.6);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 88dvh;
+  overflow: auto;
+  padding: 14px 20px calc(env(safe-area-inset-bottom, 0px) + 32px);
+  border-radius: 24px 24px 0 0;
+  background: var(--color-card);
+  box-shadow: 0 -10px 34px rgba(28, 20, 16, 0.22);
+}
+
+.sheetHandle {
+  flex: none;
+  align-self: center;
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--color-border);
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.sheetBody {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+}
+
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.sheetDismiss {
+  min-height: 46px;
+  padding: 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--color-muted-foreground);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ── 토스트 ── */
+
+.toast {
+  position: fixed;
+  z-index: 70;
+  left: 16px;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+  max-width: 448px;
+  margin: 0 auto;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  font-size: 12.5px;
+  line-height: 1.55;
+  box-shadow: 0 10px 28px rgba(28, 20, 16, 0.3);
+}
+
+/* ── dc.html pill() ── */
+
+.pill {
+  flex: none;
+  white-space: nowrap;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-card);
+  color: var(--color-muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pillActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.pillStatic {
+  cursor: default;
+}
+
+.pillSmall {
+  min-height: 30px;
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
+.pillMedium {
+  min-height: 34px;
+  padding: 7px 12px;
+  font-size: 11.5px;
+}
+
+.pillBlock {
+  flex: 1;
+  min-height: 46px;
+  padding: 12px 10px;
+  font-size: 12.5px;
+}
+
+/* ── dc.html opt() — 선택지 카드 ── */
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 48px;
+  padding: 13px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 13px;
+  background: var(--color-card);
+  color: var(--color-foreground);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.optionActive {
+  border-color: var(--color-accent);
+  background: rgba(200, 119, 58, 0.07);
+}
+
+.optionLabel {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.optionNote {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-muted-foreground);
+}
+
+/* ── dc.html cta() ── */
+
+.cta {
+  min-height: 50px;
+  padding: 15px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--gradient-cta);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cta:disabled {
+  background: #b3a79e;
+  cursor: not-allowed;
+}
+
+/* ── dc.html small() ── */
+
+.smallButton {
+  flex: 1;
+  min-width: 104px;
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 11px;
+  background: var(--color-card);
+  color: var(--color-primary);
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.smallPrimary {
+  border: 0;
+  background: var(--gradient-cta);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── 공통 조각 ── */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-card);
+}
+
+.sectionLabel {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-muted-foreground);
+}
+
+.brandMarkSquare {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+}
+
+.stepperButton {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.stepperValue {
+  flex: 1;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.rowGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: 13px;
+  background: var(--color-border);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  background: var(--color-card);
+}
+
+.emptyBox {
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-card);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+}
+
+.pageBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 13px;
+  padding: 16px 16px calc(env(safe-area-inset-bottom, 0px) + 24px);
+}
+
+.noticeBox {
+  padding: 13px;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: 14px;
+  background: #fffbeb;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-foreground);
+}
+
+.mockNote {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+}
+
+/* ── 소셜 로그인 버튼 ── */
+
+.socialButton {
+  width: 100%;
+  min-height: 50px;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+}
+
+.socialKakao {
+  background: #fee500;
+  color: #1a1200;
+}
+
+.socialNaver {
+  background: #03c75a;
+  color: #fff;
+}
+
+.socialGoogle {
+  border: 1px solid #dadce0;
+  background: #fff;
+  color: #3c4043;
+}

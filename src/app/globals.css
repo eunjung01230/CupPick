@@ -1,0 +1,65 @@
+/*
+ * CupPick v2 디자인 토큰.
+ *
+ * 값 출처는 docs/design/cuppick -v2 의 최종 디자인이다.
+ * - 색·폰트 토큰: uploads/앱 디자인 제작 요청/src/index.css @theme
+ * - 화면별 실제 사용 값: CupPick v2.dc.html
+ *
+ * 여기서 새 색이나 간격을 만들지 않는다. 화면이 필요로 하는 값이 없으면
+ * 디자인을 먼저 확인한다.
+ */
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root {
+  --font-display: "DM Serif Display", serif;
+  --font-sans: "Outfit", "Pretendard Variable", Pretendard, -apple-system, system-ui, sans-serif;
+
+  --color-background: #faf8f5;
+  --color-foreground: #1c1410;
+  --color-card: #ffffff;
+  --color-primary: #3d2b1f;
+  --color-primary-foreground: #faf8f5;
+  --color-secondary: #f0ede8;
+  --color-muted: #eae6e0;
+  --color-muted-foreground: #7a6b61;
+  --color-accent: #c8773a;
+  --color-border: #e2ddd8;
+
+  /* dc.html GRAD — 주요 CTA 배경 */
+  --gradient-cta: linear-gradient(135deg, #3d2b1f 0%, #c8773a 100%);
+  /* dc.html 게스트 배너 */
+  --gradient-guest: linear-gradient(90deg, #3d2b1f, #5a3a25);
+  /* dc.html 로고 마크 */
+  --gradient-mark: linear-gradient(145deg, #3d2b1f, #5b4a3e);
+  --color-mark-foreground: #f5e6c8;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
