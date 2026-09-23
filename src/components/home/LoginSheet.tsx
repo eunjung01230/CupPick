@@ -14,7 +14,7 @@ import { startSocialLogin } from "@/app/auth-actions.ts";
 import styles from "./HomeScreen.module.css";
 
 /** auth_accounts.auth_provider 값과 디자인 문안의 짝. */
-const SOCIAL_LOGINS = [
+export const SOCIAL_LOGINS = [
   { provider: "kakao", label: "카카오로 시작하기", className: styles.socialKakao },
   { provider: "naver", label: "네이버로 시작하기", className: styles.socialNaver },
   { provider: "google", label: "Google로 시작하기", className: styles.socialGoogle },

@@ -1,0 +1,253 @@
+/*
+ * 스플래시 · 시작 화면 스타일.
+ *
+ * 값 출처는 docs/design/cuppick -v2/CupPick v2.dc.html 의 splash · login 단계다.
+ * 색은 src/app/globals.css 의 토큰을 쓰고, 디자인에 없는 색을 새로 만들지 않는다.
+ */
+
+/* ── 스플래시 ── */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--color-splash);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.floatTile {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 19px;
+}
+
+.tilePin {
+  left: 8%;
+  top: 18%;
+  transform: rotate(-12deg);
+}
+
+.tileCup {
+  right: 8%;
+  top: 13%;
+  transform: rotate(8deg);
+}
+
+.tileBean {
+  left: 6%;
+  bottom: 22%;
+  transform: rotate(-8deg);
+}
+
+.tileLetter {
+  right: 7%;
+  bottom: 18%;
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--color-mark-foreground);
+  transform: rotate(10deg);
+}
+
+.splashMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  padding-bottom: 8px;
+  border-radius: 44px;
+  background: var(--gradient-splash-mark);
+  box-shadow: 0 0 42px rgba(255, 220, 160, 0.35);
+  font-family: var(--font-display);
+  font-size: 82px;
+  line-height: 1;
+  color: var(--color-splash);
+}
+
+.splashText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.splashTitle {
+  font-family: var(--font-display);
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  color: var(--color-mark-foreground);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: center;
+  color: rgba(245, 230, 200, 0.62);
+}
+
+.dots {
+  position: absolute;
+  bottom: calc(56px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-mark-foreground);
+  animation: pulse 1.3s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.44s;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* ── 시작 화면 ── */
+
+.start {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-splash);
+  overflow-y: auto;
+}
+
+/* 홈과 같은 모바일 폭을 유지한다. */
+.startBrand,
+.startPanel {
+  width: 100%;
+  max-width: 480px;
+}
+
+.startBrand {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 64px 32px 20px;
+}
+
+.startMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 116px;
+  height: 116px;
+  padding-bottom: 6px;
+  border-radius: 34px;
+  background: var(--gradient-splash-mark);
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--color-splash);
+}
+
+.startText {
+  text-align: center;
+}
+
+.startTitle {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.4px;
+  color: var(--color-mark-foreground);
+}
+
+.startText .tagline {
+  font-size: 14.5px;
+  color: rgba(245, 230, 200, 0.58);
+}
+
+.startPanel {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 22px calc(34px + env(safe-area-inset-bottom));
+  border-radius: 26px 26px 0 0;
+  background: var(--color-background);
+}
+
+.startLabel {
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--color-muted-foreground);
+}
+
+.startActions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 4px;
+}
+
+/* 시트용 socialButton 위에 시작 화면 크기를 덮는다. 불러오는 순서와 무관하게 이긴다. */
+.startActions .startSocial {
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.guestButton {
+  min-height: 46px;
+  padding: 13px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+}
