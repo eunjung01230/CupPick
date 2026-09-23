@@ -33,6 +33,9 @@
   /* dc.html 로고 마크 */
   --gradient-mark: linear-gradient(145deg, #3d2b1f, #5b4a3e);
   --color-mark-foreground: #f5e6c8;
+  /* dc.html 스플래시 · 시작 화면 */
+  --color-splash: #3a2416;
+  --gradient-splash-mark: linear-gradient(145deg, #f7ecd6, #e8cfa8);
 }
 
 *,
